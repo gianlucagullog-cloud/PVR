@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marathon — Backoffice PVR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#C8102E;--red-dark:#9e0c23;--red-light:#fdf0f2;--red-mid:#f5c5cc;
+  --bg:#f4f4f6;--surface:#fff;--surface2:#f8f8fa;
+  --border:#e2e2e8;--border2:#cacad4;
+  --text:#1a1a2e;--text2:#5a5a72;--text3:#9595a8;
+  --green:#0d7a3e;--green-light:#eaf7f0;
+  --orange:#c95f00;--orange-light:#fff3e8;
+  --blue:#0056b3;--blue-light:#e8f0fb;
+  --shadow:0 1px 3px rgba(0,0,0,.07),0 4px 12px rgba(0,0,0,.05);
+  --shadow-md:0 4px 20px rgba(0,0,0,.1);
+  --radius:8px;--radius-sm:5px;--radius-lg:12px;
+  --font:'IBM Plex Sans',sans-serif;--mono:'IBM Plex Mono',monospace;
+}
+body{font-family:var(--font);font-size:13px;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5}
+
+/* ── TOP BANNER ── */
+.top-banner{background:#1a1a2e;color:#fff;font-size:11px;padding:4px 20px;display:flex;justify-content:space-between;align-items:center}
+.top-banner span{opacity:.7}
+.top-banner strong{color:#ffd700;opacity:1}
+
+/* ── HEADER ── */
+.header{background:var(--surface);border-bottom:3px solid var(--red);padding:0 20px;display:flex;align-items:center;gap:0;min-height:60px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.logo{font-size:28px;font-weight:700;color:var(--red);letter-spacing:-1px;font-style:italic;margin-right:24px;flex-shrink:0;text-transform:lowercase}
+.header-ops{display:flex;gap:6px;flex:1;flex-wrap:wrap}
+.header-btn{padding:5px 11px;border:1.5px solid var(--red);background:var(--red);color:#fff;border-radius:var(--radius-sm);font-family:var(--font);font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
+.header-btn:hover{background:var(--red-dark);border-color:var(--red-dark)}
+.header-btn.ghost{background:transparent;color:var(--red)}
+.header-btn.ghost:hover{background:var(--red-light)}
+.header-account{display:flex;align-items:center;gap:16px;padding-left:16px;border-left:1px solid var(--border);flex-shrink:0}
+.account-row{display:flex;flex-direction:column;gap:2px}
+.account-item{display:flex;justify-content:space-between;gap:12px;font-size:11px}
+.account-item span:first-child{color:var(--text2);font-weight:500}
+.account-item span:last-child{font-weight:700;font-family:var(--mono)}
+.account-item .neg{color:var(--red)}
+.account-item .pos{color:var(--green)}
+.user-badge{background:var(--red);color:#fff;font-weight:700;font-size:11px;padding:6px 12px;border-radius:var(--radius-sm);cursor:pointer}
+
+/* ── NAV ── */
+.nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;display:flex;gap:0;overflow-x:auto}
+.nav-btn{padding:11px 16px;border:none;background:transparent;color:var(--text2);font-family:var(--font);font-size:12.5px;font-weight:500;cursor:pointer;border-bottom:3px solid transparent;transition:all .15s;white-space:nowrap;margin-bottom:-1px}
+.nav-btn:hover{color:var(--text);background:var(--surface2)}
+.nav-btn.active{color:var(--red);border-bottom-color:var(--red);font-weight:600}
+
+/* ── LAYOUT ── */
+.page{display:none;padding:24px 20px;max-width:1400px;margin:0 auto}
+.page.active{display:block}
+
+/* ── CARDS ── */
+.cards-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow)}
+.card-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin-bottom:8px}
+.card-value{font-size:24px;font-weight:700;font-family:var(--mono);letter-spacing:-1px}
+.card-sub{font-size:11px;color:var(--text2);margin-top:4px}
+.card.red{border-left:4px solid var(--red)}.card.green{border-left:4px solid var(--green)}.card.blue{border-left:4px solid var(--blue)}.card.orange{border-left:4px solid var(--orange)}
+.card .card-value.red{color:var(--red)}.card .card-value.green{color:var(--green)}.card .card-value.blue{color:var(--blue)}.card .card-value.orange{color:var(--orange)}
+
+/* ── SECTION ── */
+.section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow);margin-bottom:20px;overflow:hidden}
+.section-header{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--surface2)}
+.section-title{font-size:13px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:8px}
+.section-title .dot{width:8px;height:8px;border-radius:50%;background:var(--red);flex-shrink:0}
+.section-body{padding:20px}
+
+/* ── TABLE ── */
+.table-wrap{overflow-x:auto;border-radius:var(--radius)}
+table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:600px}
+th{background:var(--surface2);padding:9px 12px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--text3);border-bottom:2px solid var(--border);white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafafa}
+td .mono{font-family:var(--mono);font-size:12px}
+
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
+.badge-green{background:var(--green-light);color:var(--green)}
+.badge-red{background:var(--red-light);color:var(--red)}
+.badge-orange{background:var(--orange-light);color:var(--orange)}
+.badge-blue{background:var(--blue-light);color:var(--blue)}
+.badge-gray{background:var(--surface2);color:var(--text2);border:1px solid var(--border)}
+
+/* ── BUTTONS ── */
+.btn{padding:8px 16px;border-radius:var(--radius-sm);border:none;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-primary{background:var(--red);color:#fff}.btn-primary:hover{background:var(--red-dark)}
+.btn-secondary{background:var(--surface2);color:var(--text2);border:1.5px solid var(--border)}.btn-secondary:hover{border-color:var(--border2);color:var(--text)}
+.btn-success{background:var(--green);color:#fff}.btn-success:hover{opacity:.9}
+.btn-sm{padding:5px 10px;font-size:11px}
+
+/* ── FORM ── */
+.form-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.form-grid.two{grid-template-columns:1fr 1fr}
+.form-group{display:flex;flex-direction:column;gap:4px}
+.form-group.full{grid-column:1/-1}
+label{font-size:10.5px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.5px}
+input,select,textarea{background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:var(--font);font-size:13px;padding:8px 10px;outline:none;transition:border-color .15s;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--red);background:var(--surface)}
+textarea{resize:vertical;min-height:70px}
+
+/* ── QUICK OPS ── */
+.quick-ops{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
+.quick-op{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:20px;cursor:pointer;transition:all .2s;text-align:center}
+.quick-op:hover{border-color:var(--red);box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.quick-op-icon{font-size:28px;margin-bottom:10px}
+.quick-op-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px}
+.quick-op-desc{font-size:11px;color:var(--text2)}
+
+/* ── REFERRAL ── */
+.referral-box{background:linear-gradient(135deg,var(--red) 0%,var(--red-dark) 100%);border-radius:var(--radius-lg);padding:20px;color:#fff;display:flex;align-items:center;gap:20px}
+.referral-box h4{font-size:14px;font-weight:700;margin-bottom:6px}
+.referral-box p{font-size:11.5px;opacity:.85;margin-bottom:12px}
+.referral-link{background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.3);border-radius:var(--radius-sm);padding:8px 12px;font-family:var(--mono);font-size:12px;color:#fff;width:100%;outline:none;cursor:text}
+.qr-placeholder{width:80px;height:80px;background:rgba(255,255,255,.95);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:9px;color:var(--red);font-weight:700;text-align:center;padding:4px}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(2px)}
+.modal-box{background:var(--surface);border-radius:var(--radius-lg);box-shadow:0 20px 60px rgba(0,0,0,.2);width:min(500px,94vw);padding:28px;position:relative}
+.modal-title{font-size:16px;font-weight:700;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--red);color:var(--text)}
+.modal-close{position:absolute;top:16px;right:16px;background:none;border:none;font-size:18px;cursor:pointer;color:var(--text2);line-height:1}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
+
+/* ── FILTERS ── */
+.filters-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.filters-bar select,.filters-bar input{width:auto;min-width:130px;font-size:12px;padding:7px 10px}
+.filters-bar label{text-transform:none;font-size:12px;font-weight:500;color:var(--text2);white-space:nowrap}
+
+/* ── STAT ROW ── */
+.stat-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
+.stat-row:last-child{border-bottom:none}
+.stat-row-label{font-size:12.5px;color:var(--text2)}
+.stat-row-value{font-size:14px;font-weight:700;font-family:var(--mono)}
+
+/* ── COMMISSION PLAN ── */
+.plan-card{background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:10px}
+.plan-card h4{font-size:13px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.plan-tag{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:600}
+
+/* ── INVOICE ── */
+.invoice-preview{border:1px solid var(--border);border-radius:var(--radius);padding:24px;background:var(--surface);font-size:12px}
+.invoice-header{display:flex;justify-content:space-between;margin-bottom:24px;border-bottom:2px solid var(--red);padding-bottom:16px}
+.invoice-logo{font-size:22px;font-weight:700;color:var(--red);font-style:italic}
+.invoice-table{width:100%;border-collapse:collapse;margin:16px 0}
+.invoice-table th{background:var(--red);color:#fff;padding:8px 10px;text-align:left;font-size:11px}
+.invoice-table td{padding:8px 10px;border-bottom:1px solid var(--border)}
+.invoice-total{text-align:right;margin-top:12px;font-size:14px;font-weight:700}
+
+/* ── ALERT ── */
+.alert{padding:12px 16px;border-radius:var(--radius-sm);font-size:12.5px;font-weight:500;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.alert-success{background:var(--green-light);border:1px solid #a8dfc0;color:var(--green)}
+.alert-error{background:var(--red-light);border:1px solid var(--red-mid);color:var(--red)}
+.alert-info{background:var(--blue-light);border:1px solid #b3d0f5;color:var(--blue)}
+
+/* ── MISC ── */
+.page-title{font-size:18px;font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.page-title::before{content:'';width:4px;height:20px;background:var(--red);border-radius:2px;display:inline-block}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.empty-state{text-align:center;padding:48px;color:var(--text3)}
+.empty-state p{margin-top:8px;font-size:13px}
+.text-right{text-align:right}
+.text-red{color:var(--red)}
+.text-green{color:var(--green)}
+.text-mono{font-family:var(--mono)}
+.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
+#msg-global{position:fixed;top:80px;right:20px;z-index:9999;min-width:280px}
+
+/* ── DOCUMENTI ── */
+.doc-type-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.doc-type-card{background:var(--surface);border:2px solid var(--border);border-radius:var(--radius-lg);padding:20px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.doc-type-card:hover{border-color:var(--red);box-shadow:var(--shadow-md)}
+.doc-type-card.selected{border-color:var(--red);background:var(--red-light)}
+.doc-type-card.selected::after{content:'✓';position:absolute;top:10px;right:12px;font-size:14px;font-weight:700;color:var(--red)}
+.doc-type-icon{font-size:30px;margin-bottom:10px}
+.doc-type-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px}
+.doc-type-desc{font-size:11px;color:var(--text2);line-height:1.4}
+.doc-type-count{display:inline-flex;align-items:center;justify-content:center;background:var(--red);color:#fff;border-radius:20px;font-size:10px;font-weight:700;padding:1px 7px;margin-top:8px}
+
+.upload-zone{border:2px dashed var(--border2);border-radius:var(--radius-lg);padding:36px;text-align:center;cursor:pointer;transition:all .2s;background:var(--surface2);position:relative}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--red);background:var(--red-light)}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-zone-icon{font-size:36px;margin-bottom:12px}
+.upload-zone p{color:var(--text2);font-size:13px;line-height:2}
+.upload-zone strong{color:var(--red)}
+
+.doc-row{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);transition:background .15s}
+.doc-row:last-child{border-bottom:none}
+.doc-row:hover{background:var(--surface2)}
+.doc-icon-box{width:40px;height:40px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.doc-icon-box.pdf{background:#fff0f0;border:1px solid #fccaca}
+.doc-icon-box.img{background:#f0f4ff;border:1px solid #c7d8fb}
+.doc-icon-box.docx{background:#f0f7ff;border:1px solid #b3d4fb}
+.doc-icon-box.other{background:var(--surface2);border:1px solid var(--border)}
+.doc-info{flex:1;min-width:0}
+.doc-name{font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.doc-meta{font-size:11px;color:var(--text3);margin-top:2px}
+.doc-actions{display:flex;gap:6px;flex-shrink:0}
+.doc-status-bar{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.doc-stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 18px;display:flex;align-items:center;gap:10px;box-shadow:var(--shadow)}
+.doc-stat-num{font-size:22px;font-weight:700;font-family:var(--mono)}
+.doc-stat-label{font-size:10.5px;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+
+.plan-selector{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.plan-option{border:2px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;transition:all .15s;position:relative}
+.plan-option:hover{border-color:var(--red)}
+.plan-option.selected{border-color:var(--red);background:var(--red-light)}
+.plan-option.selected::after{content:'✓ Selezionato';position:absolute;top:10px;right:12px;font-size:10px;font-weight:700;color:var(--red)}
+.plan-option h5{font-size:13px;font-weight:700;margin-bottom:6px;color:var(--text)}
+.plan-option ul{font-size:11.5px;color:var(--text2);list-style:none;padding:0}
+.plan-option ul li::before{content:'› ';color:var(--red)}
+</style>
+</head>
+<body>
+
+<div id="msg-global"></div>
+
+<!-- TOP BANNER -->
+<div class="top-banner">
+  <span>Il gioco è vietato ai minori di 18 anni e può causare dipendenza patologica. Probabilità di vincita sul sito ADM.</span>
+  <strong>Backoffice PVR v1.0 — API Ready</strong>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">marathon</div>
+  <div class="header-ops">
+    <button class="header-btn" onclick="openModal('modal-crea-conto')">👤 Crea Conto</button>
+    <button class="header-btn" onclick="openModal('modal-ricarica')">💳 Ricarica</button>
+    <button class="header-btn" onclick="openModal('modal-paga-voucher')">🎟 Paga Voucher</button>
+    <button class="header-btn ghost" onclick="openModal('modal-lista-contratti')">📋 Lista Contratti</button>
+    <button class="header-btn ghost" onclick="showPage('pagamenti')">💸 Movimentazioni</button>
+  </div>
+  <div class="header-account">
+    <div class="account-row">
+      <div class="account-item"><span>Fido:</span><span class="mono" id="hdr-fido">5.000,00 €</span></div>
+      <div class="account-item"><span>Saldo:</span><span class="mono pos" id="hdr-saldo">3.247,50 €</span></div>
+      <div class="account-item"><span>Disponibilità:</span><span class="mono pos" id="hdr-disp">3.247,50 €</span></div>
+    </div>
+    <div class="user-badge" onclick="openModal('modal-profilo')">PVR_001</div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <button class="nav-btn active" onclick="showPage('dashboard',this)">Dashboard</button>
+  <button class="nav-btn" onclick="showPage('utenti',this)">Gestione Utenti</button>
+  <button class="nav-btn" onclick="showPage('transazioni',this)">Movimentazioni</button>
+  <button class="nav-btn" onclick="showPage('schedine',this)">Schedine</button>
+  <button class="nav-btn" onclick="showPage('statistiche',this)">Statistiche</button>
+  <button class="nav-btn" onclick="showPage('commissioni',this)">Commissioni</button>
+  <button class="nav-btn" onclick="showPage('pagamenti',this)">Pagamenti Voucher</button>
+  <button class="nav-btn" onclick="showPage('fatture',this)">Fatture</button>
+  <button class="nav-btn" onclick="showPage('documenti',this)">📁 Documenti</button>
+</div>
+
+<!-- ════════════════════════════════════ DASHBOARD ════════════════════════════════════ -->
+<div class="page active" id="page-dashboard">
+  <div class="cards-grid">
+    <div class="card red"><div class="card-label">Saldo PVR</div><div class="card-value red text-mono" id="card-saldo">3.247,50 €</div><div class="card-sub">Aggiornato ora</div></div>
+    <div class="card green"><div class="card-label">Saldo Utenti</div><div class="card-value green text-mono">18.430,00 €</div><div class="card-sub">12 utenti attivi</div></div>
+    <div class="card blue"><div class="card-label">Prelevabile Utenti</div><div class="card-value blue text-mono">4.210,00 €</div><div class="card-sub">3 richieste in attesa</div></div>
+    <div class="card orange"><div class="card-label">Commissioni Mese</div><div class="card-value orange text-mono">847,30 €</div><div class="card-sub">+12% vs mese scorso</div></div>
+  </div>
+
+  <div class="quick-ops">
+    <div class="quick-op" onclick="openModal('modal-ricarica')">
+      <div class="quick-op-icon">💳</div>
+      <div class="quick-op-title">Ricarica Utente</div>
+      <div class="quick-op-desc">Deposita fondi tramite scratchcard</div>
+    </div>
+    <div class="quick-op" onclick="openModal('modal-paga-voucher')">
+      <div class="quick-op-icon">🎟</div>
+      <div class="quick-op-title">Paga Voucher</div>
+      <div class="quick-op-desc">Processa prelievo utente via voucher</div>
+    </div>
+    <div class="quick-op" onclick="openModal('modal-prelievo-pvr')">
+      <div class="quick-op-icon">🏦</div>
+      <div class="quick-op-title">Prelievo PVR</div>
+      <div class="quick-op-desc">Preleva commissioni maturate</div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="section">
+      <div class="section-header">
+        <span class="section-title"><span class="dot"></span>Ultime Operazioni</span>
+        <button class="btn btn-secondary btn-sm" onclick="showPage('transazioni')">Vedi tutte</button>
+      </div>
+      <div class="section-body" style="padding:0">
+        <div class="table-wrap">
+          <table id="tbl-recent"></table>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="referral-box" style="margin-bottom:16px">
+        <div style="flex:1">
+          <h4>Il tuo link di registrazione</h4>
+          <p>Condividi il link o il QR code per registrare nuovi utenti sotto il tuo network</p>
+          <input class="referral-link" readonly value="https://marathonbet.it/reg/?pvr=PVR_001" onclick="this.select()">
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <button class="btn" style="background:rgba(255,255,255,.2);color:#fff;border:1.5px solid rgba(255,255,255,.4);font-size:11px" onclick="copyLink()">📋 Copia Link</button>
+            <button class="btn" style="background:rgba(255,255,255,.2);color:#fff;border:1.5px solid rgba(255,255,255,.4);font-size:11px" onclick="openModal('modal-crea-conto')">➕ Registra Utente</button>
+          </div>
+        </div>
+        <div class="qr-placeholder" id="qr-box">QR<br>CODE<br>PVR_001</div>
+      </div>
+      <div class="section">
+        <div class="section-header"><span class="section-title"><span class="dot"></span>Richieste Prelievo in Attesa</span><span class="badge badge-red" id="badge-pending">3</span></div>
+        <div class="section-body" style="padding:0"><div class="table-wrap"><table id="tbl-pending"></table></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════ UTENTI ════════════════════════════════════ -->
+<div class="page" id="page-utenti">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+    <div class="page-title">Gestione Utenti</div>
+    <button class="btn btn-primary" onclick="openModal('modal-crea-conto')">➕ Registra Nuovo Utente</button>
+  </div>
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title"><span class="dot"></span>Lista Utenti</span>
+    </div>
+    <div class="section-body">
+      <div class="filters-bar">
+        <label>Cerca:</label>
+        <input placeholder="Nome, cognome, email..." id="user-search" oninput="filterUsers()" style="min-width:220px">
+        <label>Stato:</label>
+        <select id="user-status-filter" onchange="filterUsers()">
+          <option value="all">Tutti</option>
+          <option value="active">Attivi</option>
+          <option value="suspended">Sospesi</option>
+        </select>
+      </div>
+      <div class="table-wrap"><table id="tbl-users"></table></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════ TRANSAZIONI ════════════════════════════════════ -->
+<div class="page" id="page-transazioni">
+  <div class="page-title">Movimentazioni</div>
+  <div class="section">
+    <div class="section-header"><span class="section-title"><span class="dot"></span>Storico Transazioni</span></div>
+    <div class="section-body">
+      <div class="filters-bar">
+        <label>Dal:</label><input type="date" id="tx-from">
+        <label>Al:</label><input type="date" id="tx-to">
+        <label>Tipo:</label>
+        <select id="tx-type">
+          <option value="all">Tutti</option>
+          <option value="deposit">Versamento</option>
+          <option value="withdrawal">Prelievo</option>
+          <option value="commission">Commissione</option>
+          <option value="voucher">Voucher</option>
+        </select>
+        <button class="btn btn-primary btn-sm" onclick="renderTxTable()">Filtra</button>
+        <button class="btn btn-secondary btn-sm" onclick="exportCSV()">Esporta CSV</button>
+      </div>
+      <div class="table-wrap"><table id="tbl-tx"></table></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════ SCHEDINE ════════════════════════════════════ -->
+<div class="page" id="page-schedine">
+  <div class="page-title">Schedine</div>
+  <div class="cards-grid" style="grid-template-columns:repeat(4,1fr)">
+    <div class="card"><div class="card-label">Schedine oggi</div><div class="card-value">47</div></div>
+    <div class="card green"><div class="card-label">Turnover oggi</div><div class="card-value green text-mono">1.240,00 €</div></div>
+    <div class="card red"><div class="card-label">Payout oggi</div><div class="card-value red text-mono">980,50 €</div></div>
+    <div class="card orange"><div class="card-label">GGR oggi</div><div class="card-value orange text-mono">259,50 €</div></div>
+  </div>
+  <div class="section">
+    <div class="section-header"><span class="section-title"><span class="dot"></span>Lista Schedine</span></div>
+    <div class="section-body">
+      <div class="filters-bar">
+        <label>Utente:</label><input placeholder="Username..." id="slip-user" style="min-width:160px">
+        <label>Stato:</label>
+        <select id="slip-status">
+          <option value="all">Tutte</option>
+          <option value="won">Vincente</option>
+          <option value="lost">Perdente</option>
+          <option value="open">Aperta</option>
+          <option value="void">Annullata</option>
+        </select>
+        <label>Dal:</label><input type="date" id="slip-from">
+        <button class="btn btn-primary btn-sm" onclick="renderSlipsTable()">Filtra</button>
+      </div>
+      <div class="table-wrap"><table id="tbl-slips"></table></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════ STATISTICHE ════════════════════════════════════ -->
+<div class="page" id="page-statistiche">
+  <div class="page-title">Statistiche Gaming</div>
+  <div class="filters-bar" style="margin-bottom:20px">
+    <label>Periodo:</label>
+    <select id="stats-period" onchange="renderStats()">
+      <option value="today">Oggi</option>
+      <option value="week">Questa settimana</option>
+      <option value="month" selected>Questo mese</option>
+      <option value="quarter">Questo trimestre</option>
+      <option value="year">Quest'anno</option>
+    </select>
+  </div>
+  <div class="three-col" style="margin-bottom:20px">
+    <div class="section"><div class="section-header"><span class="section-title"><span class="dot"></span>Sport</span></div><div class="section-body" id="stats-sport"></div></div>
+    <div class="section"><div class="section-header"><span class="section-title"><span class="dot"></span>Casino</span></div><div class="section-body" id="stats-casino"></div></div>
+    <div class="section"><div class="section-header"><span class="section-title"><span class="dot"></span>Virtual</span></div><div class="section-body" id="stats-virtual"></div></div>
+  </div>
+  <div class="section">
+    <div class="section-header"><span class="section-title"><span class="dot"></span>Top Utenti per Volume</span></div>
+    <div class="section-body" style="padding:0"><div class="table-wrap"><table id="tbl-top-users"></table></div></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════ COMMISSIONI ════════════════════════════════════ -->
+<div class="page" id="page-commissioni">
+  <div class="page-title">Commissioni</div>
+  <div class="two-col" style="margin-bottom:20px">
+    <div class="section">
+      <div class="section-header"><span class="section-title"><span class="dot"></span>Riepilogo Mese Corrente</span></div>
+      <div class="section-body" id="comm-summary"></div>
+    </div>
+    <div class="section">
+      <div class="section-header"><span class="section-title"><span class="dot"></span>Piano Commissionale Attivo</span></div>
+      <div class="section-body" id="comm-plan"></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-header"><span class="section-title"><span class="dot"></span>Storico Commissioni</span></div>
+    <div class="section-body">
+      <div class="filters-bar">
+        <label>Prodotto:</label>
+        <select id="comm-product">
+          <option value="all">Tutti</option>
+          <option value="sport">Sport</option>
+          <option value="casino">Casino</option>
+          <option value="virtual">Virtual</option>
+        </select>
+        <label>Mese:</label>
+        <select id="comm-month">
+          <option value="04-2026">Aprile 2026</option>
+          <option value="03-2026">Marzo 2026</option>
+          <option value="02-2026">Febbraio 2026</option>
+          <option value="01-2026">Gennaio 2026</option>
+        </select>
+        <button class="btn btn-primary btn-sm" onclick="renderCommTable()">Filtra</button>
+      </div>
+      <div class="table-wrap"><table id="tbl-comm"></table></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════ PAGAMENTI VOUCHER ════════════════════════════════════ -->
+<div class="page" id="page-pagamenti">
+  <div class="page-title">Pagamenti Voucher</div>
+  <div class="cards-grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="card green"><div class="card-label">Depositi (mese)</div><div class="card-value green text-mono">12.400,00 €</div><div class="card-sub">84 operazioni</div></div>
+    <div class="card red"><div class="card-label">Prelievi (mese)</div><div class="card-value red text-mono">9.850,00 €</div><div class="card-sub">51 operazioni</div></div>
+    <div class="card blue"><div class="card-label">Saldo Netto</div><div class="card-value blue text-mono">2.550,00 €</div><div class="card-sub">Differenza depositi/prelievi</div></div>
+  </div>
+  <div class="section">
+    <div class="section-header"><span class="section-title"><span class="dot"></span>Storico Operazioni</span></div>
+    <div class="section-body">
+      <div class="filters-bar">
+        <label>Tipo:</label>
+        <select id="pay-type">
+          <option value="all">Tutti</option>
+          <option value="deposit">Depositi (Ricarica)</option>
+          <option value="withdrawal">Prelievi (Paga Voucher)</option>
+        </select>
+        <label>Dal:</label><input type="date" id="pay-from">
+        <label>Al:</label><input type="date" id="pay-to">
+        <button class="btn btn-primary btn-sm">Filtra</button>
+        <button class="btn btn-secondary btn-sm">Esporta</button>
+      </div>
+      <div class="table-wrap"><table id="tbl-pay"></table></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════ FATTURE ════════════════════════════════════ -->
+<div class="page" id="page-fatture">
+  <div class="page-title">Fatture</div>
+  <div class="two-col">
+    <div class="section">
+      <div class="section-header">
+        <span class="section-title"><span class="dot"></span>Genera Fattura Commissioni</span>
+        <button class="btn btn-primary btn-sm" onclick="generateInvoice()">Genera PDF</button>
+      </div>
+      <div class="section-body">
+        <div class="form-grid two" style="margin-bottom:16px">
+          <div class="form-group"><label>Periodo</label>
+            <select id="inv-period">
+              <option>Aprile 2026</option><option>Marzo 2026</option><option>Febbraio 2026</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Tipo Commissione</label>
+            <select id="inv-type"><option>Tutte</option><option>Sport</option><option>Casino</option><option>Virtual</option></select>
+          </div>
+          <div class="form-group"><label>Ragione Sociale</label><input value="Mario Rossi" id="inv-name"></div>
+          <div class="form-group"><label>Partita IVA</label><input value="IT12345678901" id="inv-vat"></div>
+          <div class="form-group full"><label>Indirizzo</label><input value="Via Roma 1, 00100 Roma (RM)" id="inv-addr"></div>
+        </div>
+        <div class="invoice-preview" id="invoice-preview"></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header"><span class="section-title"><span class="dot"></span>Storico Fatture</span></div>
+      <div class="section-body" style="padding:0"><div class="table-wrap"><table id="tbl-invoices"></table></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════ DOCUMENTI ════════════════════════════════════ -->
+<div class="page" id="page-documenti">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+    <div class="page-title">Gestione Documenti</div>
+    <button class="btn btn-primary" onclick="openModal('modal-upload-doc')">📤 Carica Documento</button>
+  </div>
+
+  <!-- Status bar -->
+  <div class="doc-status-bar">
+    <div class="doc-stat"><span class="doc-stat-num" id="docstat-total" style="color:var(--blue)">0</span><div><div class="doc-stat-label">Totale Documenti</div></div></div>
+    <div class="doc-stat"><span class="doc-stat-num" id="docstat-approved" style="color:var(--green)">0</span><div><div class="doc-stat-label">Approvati</div></div></div>
+    <div class="doc-stat"><span class="doc-stat-num" id="docstat-pending" style="color:var(--orange)">0</span><div><div class="doc-stat-label">In Revisione</div></div></div>
+    <div class="doc-stat"><span class="doc-stat-num" id="docstat-expired" style="color:var(--red)">0</span><div><div class="doc-stat-label">Scaduti / Da Rinnovare</div></div></div>
+  </div>
+
+  <!-- Category cards -->
+  <div class="doc-type-grid" id="doc-category-cards"></div>
+
+  <!-- Documents list -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title"><span class="dot"></span>Archivio Documenti</span>
+      <div style="display:flex;gap:8px;align-items:center">
+        <select id="doc-filter-cat" onchange="renderDocumenti()" style="font-size:12px;padding:6px 10px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface2);font-family:var(--font)">
+          <option value="all">Tutte le categorie</option>
+          <option value="contratto">Contratti Commerciali</option>
+          <option value="identita">Documenti d'Identità</option>
+          <option value="bancario">Documenti Bancari</option>
+          <option value="provvigionale">Piano Provvigionale</option>
+        </select>
+        <select id="doc-filter-user" onchange="renderDocumenti()" style="font-size:12px;padding:6px 10px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface2);font-family:var(--font)">
+          <option value="all">Tutti gli utenti</option>
+        </select>
+        <select id="doc-filter-status" onchange="renderDocumenti()" style="font-size:12px;padding:6px 10px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface2);font-family:var(--font)">
+          <option value="all">Tutti gli stati</option>
+          <option value="approved">Approvato</option>
+          <option value="pending">In revisione</option>
+          <option value="expired">Scaduto</option>
+        </select>
+      </div>
+    </div>
+    <div id="doc-list-container"></div>
+  </div>
+</div>
+
+<!-- MODAL UPLOAD DOC -->
+<div class="modal-overlay" id="modal-upload-doc" style="display:none" onclick="closeModal('modal-upload-doc',event)">
+  <div class="modal-box" onclick="event.stopPropagation()" style="width:min(620px,94vw)">
+    <button class="modal-close" onclick="closeModal('modal-upload-doc')">✕</button>
+    <div class="modal-title">📤 Carica Documento</div>
+
+    <!-- Step 1: category -->
+    <div id="upload-step-1">
+      <div style="font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">1. Seleziona la categoria</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px" id="modal-cat-grid">
+        <div class="doc-type-card" onclick="selectDocCategory('contratto',this)" style="padding:14px">
+          <div class="doc-type-icon">📋</div>
+          <div class="doc-type-name">Contratto Commerciale</div>
+          <div class="doc-type-desc">Accordo PVR, addendum, rinnovi</div>
+        </div>
+        <div class="doc-type-card" onclick="selectDocCategory('identita',this)" style="padding:14px">
+          <div class="doc-type-icon">🪪</div>
+          <div class="doc-type-name">Documento d'Identità</div>
+          <div class="doc-type-desc">Carta d'identità, passaporto, patente</div>
+        </div>
+        <div class="doc-type-card" onclick="selectDocCategory('bancario',this)" style="padding:14px">
+          <div class="doc-type-icon">🏦</div>
+          <div class="doc-type-name">Documento Bancario</div>
+          <div class="doc-type-desc">IBAN, estratto conto, coordinate bancarie</div>
+        </div>
+        <div class="doc-type-card" onclick="selectDocCategory('provvigionale',this)" style="padding:14px">
+          <div class="doc-type-icon">📊</div>
+          <div class="doc-type-name">Piano Provvigionale</div>
+          <div class="doc-type-desc">Seleziona e conferma il piano commissioni</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: details -->
+    <div id="upload-step-2" style="display:none">
+      <div style="font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">2. Dettagli documento</div>
+
+      <div class="form-grid two" style="margin-bottom:16px">
+        <div class="form-group">
+          <label>Associa a Utente</label>
+          <select id="up-user">
+            <option value="pvr">— PVR (documento aziendale) —</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tipo Documento</label>
+          <select id="up-doc-type"></select>
+        </div>
+        <div class="form-group">
+          <label>Data Documento</label>
+          <input type="date" id="up-date">
+        </div>
+        <div class="form-group">
+          <label>Data Scadenza (opz.)</label>
+          <input type="date" id="up-expiry">
+        </div>
+        <div class="form-group full">
+          <label>Note / Descrizione</label>
+          <textarea id="up-notes" placeholder="Informazioni aggiuntive..." style="min-height:50px"></textarea>
+        </div>
+      </div>
+
+      <!-- Piano provvigionale selector (mostra solo se cat=provvigionale) -->
+      <div id="plan-selector-block" style="display:none">
+        <div style="font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Piano commissionale selezionato</div>
+        <div class="plan-selector" id="plan-options">
+          <div class="plan-option selected" onclick="selectPlan(this,'net_revenue')">
+            <h5>Net Revenue Standard</h5>
+            <ul><li>Sport: 15% del GGR</li><li>Casino: 10% del GGR</li><li>Virtual: 10% del GGR</li><li>Carry-forward perdite attivo</li></ul>
+          </div>
+          <div class="plan-option" onclick="selectPlan(this,'turnover')">
+            <h5>Turnover % per Esiti</h5>
+            <ul><li>1 esito: 1.5% del turnover</li><li>2–3 esiti: 2.0% del turnover</li><li>4+ esiti: 2.5% del turnover</li><li>Nessun carry-forward</li></ul>
+          </div>
+          <div class="plan-option" onclick="selectPlan(this,'mixed')">
+            <h5>Piano Misto NR + Turnover</h5>
+            <ul><li>Sport: 10% NR + 1% Turnover</li><li>Casino: 8% NR</li><li>Soglia minima mensile: 500€</li></ul>
+          </div>
+          <div class="plan-option" onclick="selectPlan(this,'shared_risk')">
+            <h5>Shared Risk</h5>
+            <ul><li>20% NR nei mesi positivi</li><li>Partecipazione al GGR negativo</li><li>Solo per affiliati senior</li><li>Approvazione richiesta</li></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upload zone (nascosta per piano provvigionale) -->
+      <div id="file-upload-block">
+        <div style="font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">File allegato</div>
+        <div class="upload-zone" id="upload-drop-zone">
+          <input type="file" id="up-file" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" onchange="previewFile(this)">
+          <div class="upload-zone-icon">📎</div>
+          <p><strong>Clicca o trascina il file</strong><br><span style="font-size:11px">PDF · JPG · PNG · DOCX — Max 10 MB</span></p>
+        </div>
+        <div id="file-preview" style="display:none;margin-top:10px;padding:10px 14px;background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--radius-sm);display:flex;align-items:center;gap:10px">
+          <span id="file-preview-icon" style="font-size:22px"></span>
+          <div style="flex:1"><div id="file-preview-name" style="font-weight:600;font-size:13px"></div><div id="file-preview-size" style="font-size:11px;color:var(--text3)"></div></div>
+          <button class="btn btn-secondary btn-sm" onclick="clearFile()">✕</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('modal-upload-doc')">Annulla</button>
+      <button class="btn btn-secondary" id="btn-back-step" style="display:none" onclick="backToStep1()">← Indietro</button>
+      <button class="btn btn-primary" id="btn-upload-confirm" onclick="confirmUpload()">Carica Documento ↑</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DOC DETAIL -->
+<div class="modal-overlay" id="modal-doc-detail" style="display:none" onclick="closeModal('modal-doc-detail',event)">
+  <div class="modal-box" onclick="event.stopPropagation()" style="width:min(560px,94vw)">
+    <button class="modal-close" onclick="closeModal('modal-doc-detail')">✕</button>
+    <div class="modal-title" id="doc-detail-title">Dettaglio Documento</div>
+    <div id="doc-detail-body"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('modal-doc-detail')">Chiudi</button>
+      <button class="btn btn-secondary" id="btn-doc-download" onclick="showMsg('Download avviato (funzione disponibile con backend collegato)','info')">📥 Scarica</button>
+      <button class="btn btn-primary" id="btn-doc-approve" onclick="approveDoc()">✓ Approva</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════ MODALS ════════════════════════════════════ -->
+
+<!-- RICARICA -->
+<div class="modal-overlay" id="modal-ricarica" style="display:none" onclick="closeModal('modal-ricarica',event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal('modal-ricarica')">✕</button>
+    <div class="modal-title">💳 Ricarica Utente</div>
+    <div class="form-grid two">
+      <div class="form-group full"><label>Username / Codice Utente</label><input id="ric-user" placeholder="es. mario_rossi"></div>
+      <div class="form-group"><label>Importo (€)</label><input type="number" id="ric-amount" placeholder="0.00" step="0.01"></div>
+      <div class="form-group"><label>Codice Scratchcard</label><input id="ric-code" placeholder="SC-XXXX-XXXX"></div>
+      <div class="form-group full"><label>Note</label><textarea id="ric-note" placeholder="Opzionale..."></textarea></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('modal-ricarica')">Annulla</button>
+      <button class="btn btn-primary" onclick="processRicarica()">✓ Conferma Ricarica</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGA VOUCHER -->
+<div class="modal-overlay" id="modal-paga-voucher" style="display:none" onclick="closeModal('modal-paga-voucher',event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal('modal-paga-voucher')">✕</button>
+    <div class="modal-title">🎟 Paga Voucher — Prelievo Utente</div>
+    <div class="alert alert-info">Verifica l'identità dell'utente prima di procedere al pagamento.</div>
+    <div class="form-grid two">
+      <div class="form-group full"><label>Codice Voucher</label><input id="vou-code" placeholder="VOUCH-XXXX-XXXX-XXXX"></div>
+      <div class="form-group"><label>Importo (€)</label><input type="number" id="vou-amount" placeholder="0.00" readonly></div>
+      <div class="form-group"><label>Beneficiario</label><input id="vou-user" placeholder="Verifica automatica..." readonly></div>
+      <div class="form-group full"><label>Documento identità n°</label><input id="vou-doc" placeholder="Carta d'identità / Passaporto"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('modal-paga-voucher')">Annulla</button>
+      <button class="btn btn-secondary" onclick="verifyVoucher()">🔍 Verifica Voucher</button>
+      <button class="btn btn-success" onclick="processVoucher()">✓ Paga Voucher</button>
+    </div>
+  </div>
+</div>
+
+<!-- PRELIEVO PVR -->
+<div class="modal-overlay" id="modal-prelievo-pvr" style="display:none" onclick="closeModal('modal-prelievo-pvr',event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal('modal-prelievo-pvr')">✕</button>
+    <div class="modal-title">🏦 Prelievo Commissioni PVR</div>
+    <div class="section-body" style="padding:0;margin-bottom:16px">
+      <div class="stat-row"><span class="stat-row-label">Commissioni disponibili</span><span class="stat-row-value text-green">847,30 €</span></div>
+      <div class="stat-row"><span class="stat-row-label">Prelievo minimo</span><span class="stat-row-value">50,00 €</span></div>
+    </div>
+    <div class="form-grid">
+      <div class="form-group"><label>Importo richiesto (€)</label><input type="number" id="pvr-amount" placeholder="0.00"></div>
+      <div class="form-group"><label>Metodo</label><select id="pvr-method"><option>Bonifico Bancario</option><option>Credito Conto</option></select></div>
+      <div class="form-group full"><label>IBAN</label><input id="pvr-iban" placeholder="IT60X0542811101000000123456"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('modal-prelievo-pvr')">Annulla</button>
+      <button class="btn btn-primary" onclick="processPrelievo()">Richiedi Prelievo</button>
+    </div>
+  </div>
+</div>
+
+<!-- CREA CONTO -->
+<div class="modal-overlay" id="modal-crea-conto" style="display:none" onclick="closeModal('modal-crea-conto',event)">
+  <div class="modal-box" onclick="event.stopPropagation()" style="width:min(640px,94vw)">
+    <button class="modal-close" onclick="closeModal('modal-crea-conto')">✕</button>
+    <div class="modal-title">👤 Registra Nuovo Utente</div>
+    <div class="form-grid">
+      <div class="form-group"><label>Nome</label><input id="reg-nome" placeholder="Mario"></div>
+      <div class="form-group"><label>Cognome</label><input id="reg-cognome" placeholder="Rossi"></div>
+      <div class="form-group"><label>Data di Nascita</label><input type="date" id="reg-dob"></div>
+      <div class="form-group"><label>Codice Fiscale</label><input id="reg-cf" placeholder="RSSMRA80A01H501U"></div>
+      <div class="form-group"><label>Email</label><input type="email" id="reg-email" placeholder="mario@email.it"></div>
+      <div class="form-group"><label>Telefono</label><input id="reg-tel" placeholder="+39 333 1234567"></div>
+      <div class="form-group two"><label>Documento d'identità</label><input id="reg-doc" placeholder="CI / Passaporto numero..."></div>
+      <div class="form-group full"><label>Indirizzo di residenza</label><input id="reg-addr" placeholder="Via Roma 1, 00100 Roma (RM)"></div>
+      <div class="form-group"><label>Username</label><input id="reg-user" placeholder="mario_rossi"></div>
+      <div class="form-group"><label>Password temporanea</label><input type="password" id="reg-pass" placeholder="Min. 8 caratteri"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('modal-crea-conto')">Annulla</button>
+      <button class="btn btn-primary" onclick="registerUser()">✓ Crea Account</button>
+    </div>
+  </div>
+</div>
+
+<!-- LISTA CONTRATTI -->
+<div class="modal-overlay" id="modal-lista-contratti" style="display:none" onclick="closeModal('modal-lista-contratti',event)">
+  <div class="modal-box" onclick="event.stopPropagation()" style="width:min(700px,94vw)">
+    <button class="modal-close" onclick="closeModal('modal-lista-contratti')">✕</button>
+    <div class="modal-title">📋 Lista Contratti</div>
+    <div class="table-wrap"><table id="tbl-contracts"></table></div>
+    <div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal('modal-lista-contratti')">Chiudi</button></div>
+  </div>
+</div>
+
+<!-- DETTAGLIO UTENTE -->
+<div class="modal-overlay" id="modal-user-detail" style="display:none" onclick="closeModal('modal-user-detail',event)">
+  <div class="modal-box" onclick="event.stopPropagation()" style="width:min(640px,94vw)">
+    <button class="modal-close" onclick="closeModal('modal-user-detail')">✕</button>
+    <div class="modal-title">👤 Dettaglio Utente</div>
+    <div id="user-detail-content"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('modal-user-detail')">Chiudi</button>
+      <button class="btn btn-primary" onclick="openModal('modal-ricarica')">Ricarica</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════
+// API LAYER — sostituire fetch mock con chiamate reali
+// ════════════════════════════════════
+const API = {
+  baseUrl: '/api/v1', // cambia con URL reale
+  token: localStorage.getItem('pvr_token') || 'DEMO_TOKEN',
+
+  async get(endpoint, params={}) {
+    // Per connettere API reale, decommenta:
+    // const url = new URL(this.baseUrl + endpoint, window.location.origin);
+    // Object.entries(params).forEach(([k,v]) => url.searchParams.set(k,v));
+    // const res = await fetch(url, { headers: { 'Authorization': 'Bearer '+this.token } });
+    // return res.json();
+    return MOCK.get(endpoint, params);
+  },
+
+  async post(endpoint, body={}) {
+    // Per connettere API reale, decommenta:
+    // const res = await fetch(this.baseUrl + endpoint, {
+    //   method: 'POST',
+    //   headers: { 'Content-Type':'application/json', 'Authorization': 'Bearer '+this.token },
+    //   body: JSON.stringify(body)
+    // });
+    // return res.json();
+    return MOCK.post(endpoint, body);
+  }
+};
+
+// ════════════════════════════════════
+// MOCK DATA — rimpiazza con API reale
+// ════════════════════════════════════
+const MOCK = {
+  get(ep) {
+    if(ep==='/dashboard') return {saldo:3247.50,saldo_utenti:18430,prelevabile:4210,commissioni:847.30};
+    if(ep==='/transactions') return {data:MOCK_DATA.transactions};
+    if(ep==='/users') return {data:MOCK_DATA.users};
+    if(ep==='/slips') return {data:MOCK_DATA.slips};
+    if(ep==='/payments') return {data:MOCK_DATA.payments};
+    if(ep==='/commissions') return {data:MOCK_DATA.commissions};
+    if(ep==='/invoices') return {data:MOCK_DATA.invoices};
+    if(ep==='/contracts') return {data:MOCK_DATA.contracts};
+    return {data:[]};
+  },
+  post(ep, body) {
+    console.log('[API MOCK] POST', ep, body);
+    return {success:true, message:'Operazione completata', data:body};
+  }
+};
+
+const MOCK_DATA = {
+  transactions:[
+    {id:'TX001',date:'24/04/2026 14:32',type:'deposit',user:'mario_rossi',amount:200.00,method:'Scratchcard',status:'completed'},
+    {id:'TX002',date:'24/04/2026 12:15',type:'commission',user:'—',amount:47.30,method:'Sistema',status:'completed'},
+    {id:'TX003',date:'24/04/2026 10:08',type:'withdrawal',user:'giulia_v',amount:150.00,method:'Voucher',status:'completed'},
+    {id:'TX004',date:'23/04/2026 18:45',type:'deposit',user:'luca_m92',amount:50.00,method:'Scratchcard',status:'completed'},
+    {id:'TX005',date:'23/04/2026 16:20',type:'withdrawal',user:'anna_b',amount:300.00,method:'Voucher',status:'pending'},
+    {id:'TX006',date:'23/04/2026 11:00',type:'deposit',user:'franco_p',amount:100.00,method:'Scratchcard',status:'completed'},
+    {id:'TX007',date:'22/04/2026 19:30',type:'commission',user:'—',amount:62.00,method:'Sistema',status:'completed'},
+    {id:'TX008',date:'22/04/2026 15:10',type:'deposit',user:'sara_c',amount:500.00,method:'Scratchcard',status:'completed'},
+  ],
+  users:[
+    {id:'U001',username:'mario_rossi',nome:'Mario Rossi',email:'mario@email.it',tel:'+39 333 1234567',saldo:450.00,status:'active',reg:'15/01/2026'},
+    {id:'U002',username:'giulia_v',nome:'Giulia Verdi',email:'giulia@email.it',tel:'+39 340 9876543',saldo:1200.00,status:'active',reg:'20/01/2026'},
+    {id:'U003',username:'luca_m92',nome:'Luca Mancini',email:'luca@email.it',tel:'+39 347 5556666',saldo:80.00,status:'active',reg:'02/02/2026'},
+    {id:'U004',username:'anna_b',nome:'Anna Bianchi',email:'anna@email.it',tel:'+39 320 1112233',saldo:320.00,status:'active',reg:'10/02/2026'},
+    {id:'U005',username:'franco_p',nome:'Franco Poli',email:'franco@email.it',tel:'+39 338 4445555',saldo:55.00,status:'active',reg:'18/02/2026'},
+    {id:'U006',username:'sara_c',nome:'Sara Conti',email:'sara@email.it',tel:'+39 345 7778899',saldo:1800.00,status:'active',reg:'01/03/2026'},
+    {id:'U007',username:'roberto_d',nome:'Roberto De Luca',email:'roberto@email.it',tel:'+39 329 6667788',saldo:0.00,status:'suspended',reg:'05/03/2026'},
+    {id:'U008',username:'chiara_f',nome:'Chiara Ferrari',email:'chiara@email.it',tel:'+39 312 3334455',saldo:450.00,status:'active',reg:'12/03/2026'},
+  ],
+  slips:[
+    {id:'SL00142',date:'24/04/2026 14:10',user:'mario_rossi',type:'Multipla',events:4,stake:20.00,potential:184.00,status:'open'},
+    {id:'SL00141',date:'24/04/2026 12:30',user:'giulia_v',type:'Singola',events:1,stake:50.00,potential:87.50,status:'won'},
+    {id:'SL00140',date:'24/04/2026 10:00',user:'sara_c',type:'Tripla',events:3,stake:30.00,potential:210.00,status:'lost'},
+    {id:'SL00139',date:'23/04/2026 19:15',user:'luca_m92',type:'Singola',events:1,stake:10.00,potential:23.00,status:'won'},
+    {id:'SL00138',date:'23/04/2026 17:45',user:'anna_b',type:'Multipla',events:5,stake:15.00,potential:340.00,status:'lost'},
+    {id:'SL00137',date:'23/04/2026 15:00',user:'mario_rossi',type:'Singola',events:1,stake:100.00,potential:175.00,status:'lost'},
+    {id:'SL00136',date:'23/04/2026 11:20',user:'chiara_f',type:'Tripla',events:3,stake:25.00,potential:112.50,status:'won'},
+    {id:'SL00135',date:'22/04/2026 20:00',user:'franco_p',type:'Multipla',events:6,stake:5.00,potential:890.00,status:'void'},
+  ],
+  payments:[
+    {id:'PY001',date:'24/04/2026 14:32',type:'deposit',user:'mario_rossi',amount:200.00,voucher:'SC-4821-9973',operator:'PVR_001'},
+    {id:'PY002',date:'24/04/2026 10:08',type:'withdrawal',user:'giulia_v',amount:150.00,voucher:'VOUCH-GV-2024',operator:'PVR_001'},
+    {id:'PY003',date:'23/04/2026 18:45',type:'deposit',user:'luca_m92',amount:50.00,voucher:'SC-7732-0011',operator:'PVR_001'},
+    {id:'PY004',date:'23/04/2026 16:20',type:'withdrawal',user:'anna_b',amount:300.00,voucher:'VOUCH-AB-0055',operator:'PVR_001'},
+    {id:'PY005',date:'23/04/2026 11:00',type:'deposit',user:'franco_p',amount:100.00,voucher:'SC-1190-8844',operator:'PVR_001'},
+    {id:'PY006',date:'22/04/2026 15:10',type:'deposit',user:'sara_c',amount:500.00,voucher:'SC-6621-3307',operator:'PVR_001'},
+    {id:'PY007',date:'22/04/2026 09:30',type:'withdrawal',user:'mario_rossi',amount:120.00,voucher:'VOUCH-MR-0091',operator:'PVR_001'},
+  ],
+  commissions:[
+    {id:'CM001',month:'Apr 2026',product:'Sport',ggr:4250.00,rate:'15%',amount:637.50,status:'pending'},
+    {id:'CM002',month:'Apr 2026',product:'Casino',ggr:1380.00,rate:'10%',amount:138.00,status:'pending'},
+    {id:'CM003',month:'Apr 2026',product:'Virtual',ggr:718.00,rate:'10%',amount:71.80,status:'pending'},
+    {id:'CM004',month:'Mar 2026',product:'Sport',ggr:3900.00,rate:'15%',amount:585.00,status:'paid'},
+    {id:'CM005',month:'Mar 2026',product:'Casino',ggr:920.00,rate:'10%',amount:92.00,status:'paid'},
+    {id:'CM006',month:'Feb 2026',product:'Sport',ggr:2800.00,rate:'15%',amount:420.00,status:'paid'},
+  ],
+  invoices:[
+    {id:'FT2026-04',date:'30/04/2026',period:'Aprile 2026',amount:847.30,status:'draft'},
+    {id:'FT2026-03',date:'31/03/2026',period:'Marzo 2026',amount:677.00,status:'sent'},
+    {id:'FT2026-02',date:'28/02/2026',period:'Febbraio 2026',amount:420.00,status:'paid'},
+  ],
+  contracts:[
+    {id:'CONTR-001',name:'Contratto PVR Standard',date:'01/01/2026',type:'PVR',status:'active'},
+    {id:'CONTR-002',name:'Addendum Sport Commission',date:'01/02/2026',type:'Addendum',status:'active'},
+  ],
+  pending:[
+    {user:'anna_b',nome:'Anna Bianchi',amount:300.00,voucher:'VOUCH-AB-0055',date:'23/04/2026'},
+    {user:'roberto_d',nome:'Roberto De Luca',amount:75.00,voucher:'VOUCH-RD-0012',date:'22/04/2026'},
+    {user:'luca_m92',nome:'Luca Mancini',amount:120.00,voucher:'VOUCH-LM-0088',date:'21/04/2026'},
+  ]
+};
+
+// ════════════════════════════════════
+// UI HELPERS
+// ════════════════════════════════════
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  const pg=document.getElementById('page-'+id);
+  if(pg) pg.classList.add('active');
+  if(btn) btn.classList.add('active');
+  else {
+    document.querySelectorAll('.nav-btn').forEach(b=>{
+      if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'"+id+"'")) b.classList.add('active');
+    });
+  }
+  if(id==='dashboard') renderDashboard();
+  if(id==='transazioni') renderTxTable();
+  if(id==='utenti') renderUsersTable();
+  if(id==='schedine') renderSlipsTable();
+  if(id==='statistiche') renderStats();
+  if(id==='commissioni') renderCommissions();
+  if(id==='pagamenti') renderPayments();
+  if(id==='fatture') { renderInvoices(); buildInvoicePreview(); }
+  if(id==='documenti') renderDocumenti();
+}
+function openModal(id) {
+  const m=document.getElementById(id);
+  if(m){ m.style.display='flex'; if(id==='modal-lista-contratti') renderContracts(); }
+}
+function closeModal(id,e) {
+  if(e && e.target!==document.getElementById(id)) return;
+  document.getElementById(id).style.display='none';
+}
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') document.querySelectorAll('.modal-overlay').forEach(m=>m.style.display='none'); });
+
+function showMsg(txt,type='success') {
+  const div=document.createElement('div');
+  div.className='alert alert-'+type;
+  div.innerHTML=(type==='success'?'✓ ':'⚠ ')+txt;
+  div.style.cssText='margin-bottom:8px;box-shadow:0 4px 16px rgba(0,0,0,.12);animation:fadeIn .2s';
+  document.getElementById('msg-global').appendChild(div);
+  setTimeout(()=>div.remove(),4000);
+}
+function fmt(n){return(n||0).toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+
+// ════════════════════════════════════
+// RENDER FUNCTIONS
+// ════════════════════════════════════
+function renderDashboard(){
+  // Recent transactions
+  const data=MOCK_DATA.transactions.slice(0,5);
+  const thead='<thead><tr><th>ID</th><th>Data</th><th>Tipo</th><th>Utente</th><th>Importo</th><th>Stato</th></tr></thead>';
+  const tbody='<tbody>'+data.map(t=>`<tr>
+    <td class="mono" style="font-size:11px">${esc(t.id)}</td>
+    <td>${esc(t.date)}</td>
+    <td>${txBadge(t.type)}</td>
+    <td><strong>${esc(t.user)}</strong></td>
+    <td class="mono" style="font-weight:600;color:${t.type==='withdrawal'?'var(--red)':'var(--green)'}">${t.type==='withdrawal'?'-':'+'} ${fmt(t.amount)}</td>
+    <td>${statusBadge(t.status)}</td>
+  </tr>`).join('')+'</tbody>';
+  document.getElementById('tbl-recent').innerHTML=thead+tbody;
+
+  // Pending withdrawals
+  const pending=MOCK_DATA.pending;
+  const pt='<thead><tr><th>Utente</th><th>Importo</th><th>Voucher</th><th>Azioni</th></tr></thead>';
+  const pb='<tbody>'+pending.map(p=>`<tr>
+    <td><strong>${esc(p.nome)}</strong><br><small style="color:var(--text3)">${esc(p.user)}</small></td>
+    <td class="mono text-red" style="font-weight:700">${fmt(p.amount)}</td>
+    <td class="mono" style="font-size:11px">${esc(p.voucher)}</td>
+    <td><button class="btn btn-success btn-sm" onclick="quickPay('${p.voucher}','${p.amount}','${p.nome}')">Paga</button></td>
+  </tr>`).join('')+'</tbody>';
+  document.getElementById('tbl-pending').innerHTML=pt+pb;
+}
+
+function renderTxTable(){
+  const data=MOCK_DATA.transactions;
+  const t='<thead><tr><th>ID</th><th>Data e Ora</th><th>Tipo</th><th>Utente</th><th>Importo</th><th>Metodo</th><th>Stato</th></tr></thead>';
+  const b='<tbody>'+data.map(tx=>`<tr>
+    <td class="mono" style="font-size:11px">${esc(tx.id)}</td>
+    <td>${esc(tx.date)}</td>
+    <td>${txBadge(tx.type)}</td>
+    <td>${esc(tx.user)}</td>
+    <td class="mono" style="font-weight:600;color:${tx.type==='withdrawal'?'var(--red)':'var(--green)'}">${tx.type==='withdrawal'?'-':'+'} ${fmt(tx.amount)}</td>
+    <td>${esc(tx.method)}</td>
+    <td>${statusBadge(tx.status)}</td>
+  </tr>`).join('')+'</tbody>';
+  document.getElementById('tbl-tx').innerHTML=t+b;
+}
+
+let allUsers=MOCK_DATA.users;
+function renderUsersTable(users){
+  users=users||allUsers;
+  const t='<thead><tr><th>ID</th><th>Nome Cognome</th><th>Username</th><th>Email</th><th>Saldo</th><th>Stato</th><th>Registrato</th><th>Azioni</th></tr></thead>';
+  const b='<tbody>'+users.map(u=>`<tr>
+    <td class="mono" style="font-size:11px">${esc(u.id)}</td>
+    <td><strong>${esc(u.nome)}</strong></td>
+    <td>${esc(u.username)}</td>
+    <td style="color:var(--text2);font-size:12px">${esc(u.email)}</td>
+    <td class="mono" style="font-weight:600">${fmt(u.saldo)}</td>
+    <td>${u.status==='active'?'<span class="badge badge-green">Attivo</span>':'<span class="badge badge-red">Sospeso</span>'}</td>
+    <td style="color:var(--text2);font-size:12px">${esc(u.reg)}</td>
+    <td><button class="btn btn-secondary btn-sm" onclick="showUserDetail('${u.id}')">Dettaglio</button></td>
+  </tr>`).join('')+'</tbody>';
+  document.getElementById('tbl-users').innerHTML=t+b;
+}
+function filterUsers(){
+  const q=document.getElementById('user-search').value.toLowerCase();
+  const s=document.getElementById('user-status-filter').value;
+  let filtered=allUsers;
+  if(q) filtered=filtered.filter(u=>u.nome.toLowerCase().includes(q)||u.username.toLowerCase().includes(q)||u.email.toLowerCase().includes(q));
+  if(s!=='all') filtered=filtered.filter(u=>u.status===s);
+  renderUsersTable(filtered);
+}
+function showUserDetail(id){
+  const u=allUsers.find(x=>x.id===id);
+  if(!u) return;
+  document.getElementById('user-detail-content').innerHTML=`
+    <div class="form-grid two">
+      <div class="form-group"><label>Nome Completo</label><input value="${esc(u.nome)}" readonly></div>
+      <div class="form-group"><label>Username</label><input value="${esc(u.username)}" readonly></div>
+      <div class="form-group"><label>Email</label><input value="${esc(u.email)}" readonly></div>
+      <div class="form-group"><label>Telefono</label><input value="${esc(u.tel)}" readonly></div>
+      <div class="form-group"><label>Saldo attuale</label><input value="${fmt(u.saldo)}" readonly style="font-weight:700;color:var(--green)"></div>
+      <div class="form-group"><label>Stato account</label><input value="${u.status==='active'?'Attivo':'Sospeso'}" readonly></div>
+      <div class="form-group"><label>Data registrazione</label><input value="${esc(u.reg)}" readonly></div>
+    </div>`;
+  openModal('modal-user-detail');
+}
+
+function renderSlipsTable(){
+  const data=MOCK_DATA.slips;
+  const statusColor={won:'badge-green',lost:'badge-red',open:'badge-orange',void:'badge-gray'};
+  const statusLabel={won:'Vincente',lost:'Perdente',open:'Aperta',void:'Annullata'};
+  const t='<thead><tr><th>Schedina</th><th>Data</th><th>Utente</th><th>Tipo</th><th>N° Esiti</th><th>Puntata</th><th>Potenziale</th><th>Stato</th></tr></thead>';
+  const b='<tbody>'+data.map(s=>`<tr>
+    <td class="mono" style="font-size:11px">${esc(s.id)}</td>
+    <td>${esc(s.date)}</td>
+    <td><strong>${esc(s.user)}</strong></td>
+    <td>${esc(s.type)}</td>
+    <td style="text-align:center">${s.events}</td>
+    <td class="mono" style="font-weight:600">${fmt(s.stake)}</td>
+    <td class="mono" style="color:var(--green);font-weight:600">${fmt(s.potential)}</td>
+    <td><span class="badge ${statusColor[s.status]}">${statusLabel[s.status]}</span></td>
+  </tr>`).join('')+'</tbody>';
+  document.getElementById('tbl-slips').innerHTML=t+b;
+}
+
+function renderStats(){
+  const sport={turnover:'28.400,00 €',ggr:'4.250,00 €',slips:312,margin:'14.9%'};
+  const casino={turnover:'8.200,00 €',ggr:'1.380,00 €',sessions:89,margin:'16.8%'};
+  const virt={turnover:'3.590,00 €',ggr:'718,00 €',slips:156,margin:'20.0%'};
+  const renderStatPanel=(data,el)=>{
+    el.innerHTML=Object.entries(data).map(([k,v])=>`<div class="stat-row"><span class="stat-row-label">${k.charAt(0).toUpperCase()+k.slice(1)}</span><span class="stat-row-value">${v}</span></div>`).join('');
+  };
+  renderStatPanel(sport,document.getElementById('stats-sport'));
+  renderStatPanel(casino,document.getElementById('stats-casino'));
+  renderStatPanel(virt,document.getElementById('stats-virtual'));
+  const top=[
+    {user:'giulia_v',nome:'Giulia Verdi',turnover:'8.400,00 €',ggr:'1.260,00 €',slips:87},
+    {user:'sara_c',nome:'Sara Conti',turnover:'6.200,00 €',ggr:'820,00 €',slips:63},
+    {user:'mario_rossi',nome:'Mario Rossi',turnover:'4.900,00 €',ggr:'735,00 €',slips:52},
+    {user:'anna_b',nome:'Anna Bianchi',turnover:'3.100,00 €',ggr:'465,00 €',slips:41},
+    {user:'chiara_f',nome:'Chiara Ferrari',turnover:'2.800,00 €',ggr:'420,00 €',slips:38},
+  ];
+  const t='<thead><tr><th>#</th><th>Utente</th><th>Turnover</th><th>GGR</th><th>Schedine</th></tr></thead>';
+  const b='<tbody>'+top.map((u,i)=>`<tr>
+    <td style="font-weight:700;color:var(--text3)">${i+1}</td>
+    <td><strong>${esc(u.nome)}</strong><br><small style="color:var(--text3)">${esc(u.user)}</small></td>
+    <td class="mono">${u.turnover}</td>
+    <td class="mono text-green">${u.ggr}</td>
+    <td style="text-align:center">${u.slips}</td>
+  </tr>`).join('')+'</tbody>';
+  document.getElementById('tbl-top-users').innerHTML=t+b;
+}
+
+function renderCommissions(){
+  // Summary
+  document.getElementById('comm-summary').innerHTML=`
+    <div class="stat-row"><span class="stat-row-label">Sport (15% Net Revenue)</span><span class="stat-row-value text-green">637,50 €</span></div>
+    <div class="stat-row"><span class="stat-row-label">Casino (10% Net Revenue)</span><span class="stat-row-value text-green">138,00 €</span></div>
+    <div class="stat-row"><span class="stat-row-label">Virtual (10% Net Revenue)</span><span class="stat-row-value text-green">71,80 €</span></div>
+    <hr class="divider">
+    <div class="stat-row"><span class="stat-row-label"><strong>Totale Maturato</strong></span><span class="stat-row-value text-green" style="font-size:18px">847,30 €</span></div>
+    <div class="stat-row"><span class="stat-row-label">Stato</span><span><span class="badge badge-orange">In liquidazione</span></span></div>`;
+  // Plan
+  document.getElementById('comm-plan').innerHTML=`
+    <div class="plan-card">
+      <h4>Piano Net Revenue <span class="plan-tag badge-blue badge">Attivo</span></h4>
+      <div class="stat-row"><span class="stat-row-label">Sport Betting</span><span class="stat-row-value">15% del GGR</span></div>
+      <div class="stat-row"><span class="stat-row-label">Casino</span><span class="stat-row-value">10% del GGR</span></div>
+      <div class="stat-row"><span class="stat-row-label">Virtual Sport</span><span class="stat-row-value">10% del GGR</span></div>
+      <div class="stat-row"><span class="stat-row-label">Carry-forward perdite</span><span class="stat-row-value text-red">Attivo</span></div>
+    </div>
+    <div style="font-size:11px;color:var(--text3);margin-top:8px">Per modifiche al piano commissionale contatta il tuo account manager.</div>`;
+  renderCommTable();
+}
+function renderCommTable(){
+  const t='<thead><tr><th>Mese</th><th>Prodotto</th><th>GGR</th><th>% Comm.</th><th>Importo</th><th>Stato</th></tr></thead>';
+  const b='<tbody>'+MOCK_DATA.commissions.map(c=>`<tr>
+    <td>${esc(c.month)}</td>
+    <td>${esc(c.product)}</td>
+    <td class="mono">${fmt(c.ggr)}</td>
+    <td style="font-weight:600">${esc(c.rate)}</td>
+    <td class="mono text-green" style="font-weight:700">${fmt(c.amount)}</td>
+    <td>${c.status==='paid'?'<span class="badge badge-green">Pagato</span>':'<span class="badge badge-orange">In attesa</span>'}</td>
+  </tr>`).join('')+'</tbody>';
+  document.getElementById('tbl-comm').innerHTML=t+b;
+}
+
+function renderPayments(){
+  const t='<thead><tr><th>ID</th><th>Data</th><th>Tipo</th><th>Utente</th><th>Importo</th><th>Voucher/Codice</th><th>Operatore</th></tr></thead>';
+  const b='<tbody>'+MOCK_DATA.payments.map(p=>`<tr>
+    <td class="mono" style="font-size:11px">${esc(p.id)}</td>
+    <td>${esc(p.date)}</td>
+    <td>${p.type==='deposit'?'<span class="badge badge-green">Ricarica</span>':'<span class="badge badge-red">Prelievo</span>'}</td>
+    <td><strong>${esc(p.user)}</strong></td>
+    <td class="mono" style="font-weight:700;color:${p.type==='deposit'?'var(--green)':'var(--red)'}">${p.type==='deposit'?'+':'-'} ${fmt(p.amount)}</td>
+    <td class="mono" style="font-size:11px">${esc(p.voucher)}</td>
+    <td style="color:var(--text2);font-size:12px">${esc(p.operator)}</td>
+  </tr>`).join('')+'</tbody>';
+  document.getElementById('tbl-pay').innerHTML=t+b;
+}
+
+function renderInvoices(){
+  const t='<thead><tr><th>N° Fattura</th><th>Data</th><th>Periodo</th><th>Importo</th><th>Stato</th><th></th></tr></thead>';
+  const b='<tbody>'+MOCK_DATA.invoices.map(i=>`<tr>
+    <td class="mono" style="font-size:11px">${esc(i.id)}</td>
+    <td>${esc(i.date)}</td>
+    <td>${esc(i.period)}</td>
+    <td class="mono text-green" style="font-weight:700">${fmt(i.amount)}</td>
+    <td>${i.status==='paid'?'<span class="badge badge-green">Pagata</span>':i.status==='sent'?'<span class="badge badge-blue">Inviata</span>':'<span class="badge badge-gray">Bozza</span>'}</td>
+    <td><button class="btn btn-secondary btn-sm">📄 PDF</button></td>
+  </tr>`).join('')+'</tbody>';
+  document.getElementById('tbl-invoices').innerHTML=t+b;
+}
+
+function buildInvoicePreview(){
+  document.getElementById('invoice-preview').innerHTML=`
+    <div class="invoice-header">
+      <div><div class="invoice-logo">marathon</div><div style="font-size:11px;color:var(--text2);margin-top:4px">Marathon Entertainment Ltd.</div></div>
+      <div style="text-align:right;font-size:12px">
+        <strong>FATTURA N° FT2026-04</strong><br>
+        <span style="color:var(--text2)">Data: 30/04/2026</span>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:11.5px;margin-bottom:16px">
+      <div><strong>Fornitore:</strong><br><span id="inv-preview-name">Mario Rossi</span><br><span id="inv-preview-addr" style="color:var(--text2)">Via Roma 1, 00100 Roma</span><br>P.IVA: <span id="inv-preview-vat">IT12345678901</span></div>
+      <div><strong>Destinatario:</strong><br>Marathon Entertainment Ltd.<br>Oggetto: Commissioni PVR<br>Periodo: <strong>Aprile 2026</strong></div>
+    </div>
+    <table class="invoice-table">
+      <thead><tr><th>Descrizione</th><th>GGR Base</th><th>%</th><th>Importo</th></tr></thead>
+      <tbody>
+        <tr><td>Commissioni Sport Betting — Aprile 2026</td><td>4.250,00 €</td><td>15%</td><td>637,50 €</td></tr>
+        <tr><td>Commissioni Casino — Aprile 2026</td><td>1.380,00 €</td><td>10%</td><td>138,00 €</td></tr>
+        <tr><td>Commissioni Virtual Sport — Aprile 2026</td><td>718,00 €</td><td>10%</td><td>71,80 €</td></tr>
+      </tbody>
+    </table>
+    <div class="invoice-total">Totale Netto: <strong style="color:var(--green);font-size:18px">847,30 €</strong></div>
+    <div style="font-size:10px;color:var(--text3);margin-top:12px;border-top:1px solid var(--border);padding-top:8px">Operazione fuori campo IVA ai sensi dell'art. 1 co. 58 L. 190/2014 (Regime Forfettario)</div>`;
+}
+
+function renderContracts(){
+  const t='<thead><tr><th>ID</th><th>Documento</th><th>Data</th><th>Tipo</th><th>Stato</th><th></th></tr></thead>';
+  const b='<tbody>'+MOCK_DATA.contracts.map(c=>`<tr>
+    <td class="mono" style="font-size:11px">${esc(c.id)}</td>
+    <td><strong>${esc(c.name)}</strong></td>
+    <td>${esc(c.date)}</td>
+    <td><span class="badge badge-blue">${esc(c.type)}</span></td>
+    <td><span class="badge badge-green">Attivo</span></td>
+    <td><button class="btn btn-secondary btn-sm">📄 Scarica</button></td>
+  </tr>`).join('')+'</tbody>';
+  document.getElementById('tbl-contracts').innerHTML=t+b;
+}
+
+// ════════════════════════════════════
+// BADGE HELPERS
+// ════════════════════════════════════
+function txBadge(type){
+  const m={deposit:['badge-green','Versamento'],withdrawal:['badge-red','Prelievo'],commission:['badge-blue','Commissione'],voucher:['badge-orange','Voucher']};
+  const [cls,label]=m[type]||['badge-gray',type];
+  return `<span class="badge ${cls}">${label}</span>`;
+}
+function statusBadge(s){
+  const m={completed:['badge-green','Completato'],pending:['badge-orange','In attesa'],failed:['badge-red','Fallito']};
+  const [cls,label]=m[s]||['badge-gray',s];
+  return `<span class="badge ${cls}">${label}</span>`;
+}
+
+// ════════════════════════════════════
+// OPERATIONS
+// ════════════════════════════════════
+async function processRicarica(){
+  const user=document.getElementById('ric-user').value;
+  const amount=document.getElementById('ric-amount').value;
+  const code=document.getElementById('ric-code').value;
+  if(!user||!amount||!code){showMsg('Compila tutti i campi obbligatori','error');return;}
+  const res=await API.post('/operations/deposit',{user,amount,voucher_code:code});
+  if(res.success){closeModal('modal-ricarica');showMsg(`Ricarica di ${fmt(parseFloat(amount))} effettuata per ${user}`);}
+}
+async function processVoucher(){
+  const code=document.getElementById('vou-code').value;
+  const doc=document.getElementById('vou-doc').value;
+  if(!code||!doc){showMsg('Inserisci codice voucher e documento','error');return;}
+  const res=await API.post('/operations/payout',{voucher:code,doc_id:doc});
+  if(res.success){closeModal('modal-paga-voucher');showMsg('Voucher processato con successo');}
+}
+function verifyVoucher(){
+  const code=document.getElementById('vou-code').value;
+  if(!code){showMsg('Inserisci il codice voucher','error');return;}
+  document.getElementById('vou-amount').value='150.00';
+  document.getElementById('vou-user').value='giulia_v';
+  showMsg('Voucher verificato — Beneficiario: giulia_v | Importo: 150,00 €');
+}
+async function processPrelievo(){
+  const amount=document.getElementById('pvr-amount').value;
+  const iban=document.getElementById('pvr-iban').value;
+  if(!amount||!iban){showMsg('Compila importo e IBAN','error');return;}
+  const res=await API.post('/operations/pvr-withdrawal',{amount,iban});
+  if(res.success){closeModal('modal-prelievo-pvr');showMsg(`Richiesta prelievo di ${fmt(parseFloat(amount))} inviata`);}
+}
+async function registerUser(){
+  const nome=document.getElementById('reg-nome').value;
+  const cognome=document.getElementById('reg-cognome').value;
+  const email=document.getElementById('reg-email').value;
+  if(!nome||!cognome||!email){showMsg('Nome, Cognome ed Email sono obbligatori','error');return;}
+  const res=await API.post('/users/register',{nome,cognome,email});
+  if(res.success){closeModal('modal-crea-conto');showMsg(`Account creato per ${nome} ${cognome}`);}
+}
+function quickPay(voucher,amount,nome){
+  document.getElementById('vou-code').value=voucher;
+  document.getElementById('vou-amount').value=amount;
+  document.getElementById('vou-user').value=nome;
+  openModal('modal-paga-voucher');
+}
+function copyLink(){
+  navigator.clipboard.writeText('https://marathonbet.it/reg/?pvr=PVR_001').then(()=>showMsg('Link copiato negli appunti!'));
+}
+function generateInvoice(){showMsg('Generazione PDF in corso... (funzione disponibile con backend collegato)','info');}
+function exportCSV(){showMsg('Export CSV scaricato','success');}
+
+// ════════════════════════════════════
+// DOCUMENTI
+// ════════════════════════════════════
+const DOC_CATEGORIES = {
+  contratto:    { icon:'📋', label:'Contratto Commerciale', color:'var(--blue)',   types:['Contratto PVR','Addendum','Rinnovo Contratto','Accordo Speciale','NDA'] },
+  identita:     { icon:'🪪', label:"Documento d'Identità",  color:'var(--orange)', types:["Carta d'Identità",'Passaporto','Patente di Guida','Codice Fiscale','Permesso di Soggiorno'] },
+  bancario:     { icon:'🏦', label:'Documento Bancario',     color:'var(--green)',  types:['Coordinate IBAN','Estratto Conto','Visura Camerale','Dichiarazione Bancaria','Modulo AML'] },
+  provvigionale:{ icon:'📊', label:'Piano Provvigionale',    color:'var(--red)',    types:['Net Revenue Standard','Turnover %','Piano Misto','Shared Risk','Piano Personalizzato'] }
+};
+
+const PLAN_LABELS = {
+  net_revenue:'Net Revenue Standard', turnover:'Turnover %', mixed:'Piano Misto NR + Turnover', shared_risk:'Shared Risk'
+};
+
+// Load docs from localStorage
+function loadDocs(){ try{ return JSON.parse(localStorage.getItem('pvr_docs')||'[]'); }catch(e){ return []; } }
+function saveDocs(docs){ localStorage.setItem('pvr_docs', JSON.stringify(docs)); }
+
+// Seed some demo docs if empty
+function seedDocs(){
+  if(loadDocs().length>0) return;
+  const seed=[
+    {id:'DOC001',cat:'contratto',type:'Contratto PVR',user:'pvr',userName:'PVR_001 (aziendale)',date:'01/01/2026',expiry:'31/12/2026',status:'approved',fileName:'Contratto_PVR_001_2026.pdf',fileSize:'248 KB',fileExt:'pdf',notes:'Contratto principale anno 2026',plan:null},
+    {id:'DOC002',cat:'contratto',type:'Addendum',user:'pvr',userName:'PVR_001 (aziendale)',date:'01/02/2026',expiry:'',status:'approved',fileName:'Addendum_Sport_Feb2026.pdf',fileSize:'112 KB',fileExt:'pdf',notes:'Addendum sport commissioni',plan:null},
+    {id:'DOC003',cat:'identita',type:"Carta d'Identità",user:'U001',userName:'Mario Rossi',date:'15/01/2026',expiry:'15/01/2031',status:'approved',fileName:'CI_Mario_Rossi.jpg',fileSize:'1.2 MB',fileExt:'img',notes:'',plan:null},
+    {id:'DOC004',cat:'identita',type:"Carta d'Identità",user:'U002',userName:'Giulia Verdi',date:'20/01/2026',expiry:'20/01/2030',status:'approved',fileName:'CI_Giulia_Verdi.pdf',fileSize:'890 KB',fileExt:'pdf',notes:'',plan:null},
+    {id:'DOC005',cat:'bancario',type:'Coordinate IBAN',user:'U001',userName:'Mario Rossi',date:'15/01/2026',expiry:'',status:'approved',fileName:'IBAN_Mario_Rossi.pdf',fileSize:'45 KB',fileExt:'pdf',notes:'IT60X0542811101000000123456',plan:null},
+    {id:'DOC006',cat:'bancario',type:'Modulo AML',user:'U003',userName:'Luca Mancini',date:'02/02/2026',expiry:'',status:'pending',fileName:'AML_Luca_Mancini.pdf',fileSize:'320 KB',fileExt:'pdf',notes:'In attesa di verifica',plan:null},
+    {id:'DOC007',cat:'provvigionale',type:'Net Revenue Standard',user:'pvr',userName:'PVR_001 (aziendale)',date:'01/01/2026',expiry:'31/12/2026',status:'approved',fileName:'Piano_NR_PVR001.pdf',fileSize:'—',fileExt:'pdf',notes:'Sport 15%, Casino 10%, Virtual 10%',plan:'net_revenue'},
+    {id:'DOC008',cat:'identita',type:'Passaporto',user:'U007',userName:'Roberto De Luca',date:'05/03/2026',expiry:'05/03/2031',status:'expired',fileName:'Passport_Roberto.jpg',fileSize:'2.1 MB',fileExt:'img',notes:'Da rinnovare — utente sospeso',plan:null},
+  ];
+  saveDocs(seed);
+}
+
+function renderDocumenti(){
+  seedDocs();
+  const docs=loadDocs();
+  const catFilter=document.getElementById('doc-filter-cat').value;
+  const userFilter=document.getElementById('doc-filter-user').value;
+  const statusFilter=document.getElementById('doc-filter-status').value;
+
+  // Populate user filter
+  const sel=document.getElementById('doc-filter-user');
+  const current=sel.value;
+  sel.innerHTML='<option value="all">Tutti gli utenti</option>';
+  const users=[...new Set(docs.map(d=>d.user))];
+  users.forEach(u=>{
+    const d=docs.find(x=>x.user===u);
+    const opt=document.createElement('option');
+    opt.value=u; opt.textContent=d.userName||u;
+    sel.appendChild(opt);
+  });
+  sel.value=current;
+
+  // Stats
+  document.getElementById('docstat-total').textContent=docs.length;
+  document.getElementById('docstat-approved').textContent=docs.filter(d=>d.status==='approved').length;
+  document.getElementById('docstat-pending').textContent=docs.filter(d=>d.status==='pending').length;
+  document.getElementById('docstat-expired').textContent=docs.filter(d=>d.status==='expired').length;
+
+  // Category cards
+  const catGrid=document.getElementById('doc-category-cards');
+  catGrid.innerHTML=Object.entries(DOC_CATEGORIES).map(([key,cat])=>{
+    const count=docs.filter(d=>d.cat===key).length;
+    const pending=docs.filter(d=>d.cat===key&&d.status==='pending').length;
+    return `<div class="doc-type-card" onclick="filterByCategory('${key}')">
+      <div class="doc-type-icon">${cat.icon}</div>
+      <div class="doc-type-name">${cat.label}</div>
+      <div class="doc-type-desc">${cat.types.slice(0,3).join(', ')}…</div>
+      <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+        <span class="doc-type-count">${count} doc</span>
+        ${pending?`<span class="doc-type-count" style="background:var(--orange)">${pending} in attesa</span>`:''}
+      </div>
+    </div>`;
+  }).join('');
+
+  // Filter docs
+  let filtered=docs;
+  if(catFilter!=='all') filtered=filtered.filter(d=>d.cat===catFilter);
+  if(userFilter!=='all') filtered=filtered.filter(d=>d.user===userFilter);
+  if(statusFilter!=='all') filtered=filtered.filter(d=>d.status===statusFilter);
+
+  // Render list grouped by category
+  const container=document.getElementById('doc-list-container');
+  if(!filtered.length){
+    container.innerHTML='<div class="empty-state"><div style="font-size:36px">📂</div><p>Nessun documento trovato per i filtri selezionati</p></div>';
+    return;
+  }
+
+  // Group by category
+  const groups={};
+  filtered.forEach(d=>{ if(!groups[d.cat]) groups[d.cat]=[]; groups[d.cat].push(d); });
+
+  container.innerHTML=Object.entries(groups).map(([cat,catDocs])=>{
+    const c=DOC_CATEGORIES[cat];
+    return `<div style="border-top:2px solid var(--border)">
+      <div style="padding:10px 16px;background:var(--surface2);display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border)">
+        <span style="font-size:16px">${c.icon}</span>
+        <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text2)">${c.label}</span>
+        <span class="badge badge-gray">${catDocs.length}</span>
+      </div>
+      ${catDocs.map(d=>renderDocRow(d)).join('')}
+    </div>`;
+  }).join('');
+}
+
+function renderDocRow(d){
+  const fileIcon={'pdf':'📄','img':'🖼','docx':'📝','other':'📎'}[d.fileExt]||'📎';
+  const fileIconBg={'pdf':'pdf','img':'img','docx':'docx','other':'other'}[d.fileExt]||'other';
+  const statusMap={approved:['badge-green','Approvato'],pending:['badge-orange','In Revisione'],expired:['badge-red','Scaduto']};
+  const [sBadge,sLabel]=statusMap[d.status]||['badge-gray',d.status];
+  const expiry=d.expiry?`<span style="color:var(--text3)">Scad: ${d.expiry}</span>`:'';
+  return `<div class="doc-row">
+    <div class="doc-icon-box ${fileIconBg}">${fileIcon}</div>
+    <div class="doc-info">
+      <div class="doc-name">${esc(d.fileName)}</div>
+      <div class="doc-meta">${esc(d.type)} · ${esc(d.userName)} · ${esc(d.date)} ${expiry?'· '+expiry:''} ${d.fileSize!=='—'?'· '+d.fileSize:''}</div>
+      ${d.notes?`<div class="doc-meta" style="color:var(--text2);font-style:italic">${esc(d.notes)}</div>`:''}
+    </div>
+    <div class="doc-actions">
+      <span class="badge ${sBadge}">${sLabel}</span>
+      <button class="btn btn-secondary btn-sm" onclick="showDocDetail('${d.id}')">Dettaglio</button>
+      <button class="btn btn-secondary btn-sm" onclick="deleteDoc('${d.id}')" style="color:var(--red)">✕</button>
+    </div>
+  </div>`;
+}
+
+function filterByCategory(cat){
+  document.getElementById('doc-filter-cat').value=cat;
+  renderDocumenti();
+}
+
+function showDocDetail(id){
+  const docs=loadDocs();
+  const d=docs.find(x=>x.id===id);
+  if(!d) return;
+  const c=DOC_CATEGORIES[d.cat];
+  const statusMap={approved:['badge-green','Approvato'],pending:['badge-orange','In Revisione'],expired:['badge-red','Scaduto']};
+  const [sBadge,sLabel]=statusMap[d.status]||['badge-gray',d.status];
+  document.getElementById('doc-detail-title').textContent=c.icon+' '+d.type;
+  document.getElementById('doc-detail-body').innerHTML=`
+    <div style="display:flex;align-items:center;gap:12px;padding:14px;background:var(--surface2);border-radius:var(--radius);margin-bottom:16px">
+      <span style="font-size:36px">${d.fileExt==='pdf'?'📄':d.fileExt==='img'?'🖼':'📎'}</span>
+      <div><div style="font-weight:700;font-size:14px">${esc(d.fileName)}</div><div style="color:var(--text2);font-size:12px">${d.fileSize}</div></div>
+      <span class="badge ${sBadge}" style="margin-left:auto">${sLabel}</span>
+    </div>
+    <div class="form-grid two">
+      <div class="form-group"><label>Categoria</label><input value="${c.label}" readonly></div>
+      <div class="form-group"><label>Tipo Documento</label><input value="${esc(d.type)}" readonly></div>
+      <div class="form-group"><label>Associato a</label><input value="${esc(d.userName)}" readonly></div>
+      <div class="form-group"><label>Data Documento</label><input value="${esc(d.date)}" readonly></div>
+      ${d.expiry?`<div class="form-group"><label>Scadenza</label><input value="${esc(d.expiry)}" readonly></div>`:''}
+      ${d.plan?`<div class="form-group"><label>Piano Selezionato</label><input value="${PLAN_LABELS[d.plan]||d.plan}" readonly style="font-weight:700;color:var(--red)"></div>`:''}
+      ${d.notes?`<div class="form-group full"><label>Note</label><textarea readonly style="min-height:50px">${esc(d.notes)}</textarea></div>`:''}
+    </div>
+    <div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
+      <button class="btn btn-secondary btn-sm" onclick="changeDocStatus('${id}','approved');closeModal('modal-doc-detail');renderDocumenti()">✓ Approva</button>
+      <button class="btn btn-secondary btn-sm" onclick="changeDocStatus('${id}','pending');closeModal('modal-doc-detail');renderDocumenti()">⏳ Metti in Revisione</button>
+      <button class="btn btn-secondary btn-sm" onclick="changeDocStatus('${id}','expired');closeModal('modal-doc-detail');renderDocumenti()">⚠ Segna Scaduto</button>
+    </div>`;
+  document.getElementById('btn-doc-approve').onclick=()=>{ changeDocStatus(id,'approved'); closeModal('modal-doc-detail'); renderDocumenti(); };
+  openModal('modal-doc-detail');
+}
+
+function changeDocStatus(id, status){
+  const docs=loadDocs();
+  const idx=docs.findIndex(d=>d.id===id);
+  if(idx<0) return;
+  docs[idx].status=status;
+  saveDocs(docs);
+  const lbl={approved:'Approvato',pending:'In revisione',expired:'Scaduto'};
+  showMsg(`Stato aggiornato: ${lbl[status]}`);
+  renderDocumenti();
+}
+
+function deleteDoc(id){
+  if(!confirm('Eliminare questo documento dall\'archivio?')) return;
+  const docs=loadDocs().filter(d=>d.id!==id);
+  saveDocs(docs);
+  showMsg('Documento eliminato','info');
+  renderDocumenti();
+}
+
+// ── Upload modal logic ──
+let selectedDocCat=null;
+let selectedPlan='net_revenue';
+
+function selectDocCategory(cat, el){
+  selectedDocCat=cat;
+  document.querySelectorAll('#modal-cat-grid .doc-type-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+
+  // Populate type select
+  const types=DOC_CATEGORIES[cat].types;
+  const sel=document.getElementById('up-doc-type');
+  sel.innerHTML=types.map(t=>`<option>${t}</option>`).join('');
+
+  // Populate user select
+  const usel=document.getElementById('up-user');
+  usel.innerHTML='<option value="pvr">— PVR (documento aziendale) —</option>';
+  MOCK_DATA.users.forEach(u=>{ const opt=document.createElement('option'); opt.value=u.id; opt.textContent=u.nome+' ('+u.username+')'; usel.appendChild(opt); });
+
+  // Show/hide plan selector vs file upload
+  const isPlan=cat==='provvigionale';
+  document.getElementById('plan-selector-block').style.display=isPlan?'':'none';
+  document.getElementById('file-upload-block').style.display=isPlan?'none':'';
+
+  document.getElementById('upload-step-1').style.display='none';
+  document.getElementById('upload-step-2').style.display='';
+  document.getElementById('btn-back-step').style.display='';
+  document.getElementById('btn-upload-confirm').textContent=isPlan?'✓ Conferma Piano':'📤 Carica Documento';
+
+  // Set today's date
+  document.getElementById('up-date').value=new Date().toISOString().split('T')[0];
+}
+
+function selectPlan(el, planKey){
+  selectedPlan=planKey;
+  document.querySelectorAll('.plan-option').forEach(p=>p.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('up-doc-type').value=DOC_CATEGORIES.provvigionale.types[['net_revenue','turnover','mixed','shared_risk'].indexOf(planKey)]||planKey;
+}
+
+function backToStep1(){
+  document.getElementById('upload-step-1').style.display='';
+  document.getElementById('upload-step-2').style.display='none';
+  document.getElementById('btn-back-step').style.display='none';
+  document.getElementById('btn-upload-confirm').textContent='Carica Documento ↑';
+  selectedDocCat=null;
+  clearFile();
+}
+
+function previewFile(input){
+  const file=input.files[0];
+  if(!file) return;
+  const preview=document.getElementById('file-preview');
+  const extMap={'application/pdf':'pdf','image/jpeg':'img','image/png':'img','application/vnd.openxmlformats-officedocument.wordprocessingml.document':'docx'};
+  const icons={'pdf':'📄','img':'🖼','docx':'📝'};
+  const ext=extMap[file.type]||'other';
+  document.getElementById('file-preview-icon').textContent=icons[ext]||'📎';
+  document.getElementById('file-preview-name').textContent=file.name;
+  document.getElementById('file-preview-size').textContent=(file.size/1024).toFixed(0)+' KB — '+file.type;
+  preview.style.display='flex';
+}
+
+function clearFile(){
+  document.getElementById('up-file').value='';
+  document.getElementById('file-preview').style.display='none';
+}
+
+function confirmUpload(){
+  if(!selectedDocCat){ showMsg('Seleziona una categoria','error'); return; }
+  const user=document.getElementById('up-user').value;
+  const docType=document.getElementById('up-doc-type').value;
+  const date=document.getElementById('up-date').value;
+  const expiry=document.getElementById('up-expiry').value;
+  const notes=document.getElementById('up-notes').value;
+  const isPlan=selectedDocCat==='provvigionale';
+  const fileInput=document.getElementById('up-file');
+  const hasFile=fileInput.files&&fileInput.files[0];
+
+  if(!isPlan && !hasFile){ showMsg('Seleziona un file da caricare','error'); return; }
+
+  const file=hasFile?fileInput.files[0]:null;
+  const extMap={'application/pdf':'pdf','image/jpeg':'img','image/png':'img','application/vnd.openxmlformats-officedocument.wordprocessingml.document':'docx'};
+  const ext=file?extMap[file.type]||'other':'pdf';
+
+  const users=[{id:'pvr',name:'PVR_001 (aziendale)'},...MOCK_DATA.users.map(u=>({id:u.id,name:u.nome+' ('+u.username+')'}))];
+  const userName=(users.find(u=>u.id===user)||{name:user}).name;
+
+  const newDoc={
+    id:'DOC'+Date.now(),
+    cat:selectedDocCat,
+    type:docType,
+    user,userName,
+    date:date?new Date(date).toLocaleDateString('it-IT'):'',
+    expiry:expiry?new Date(expiry).toLocaleDateString('it-IT'):'',
+    status:'pending',
+    fileName:file?file.name:(PLAN_LABELS[selectedPlan]||docType).replace(/\s+/g,'_')+'.pdf',
+    fileSize:file?(file.size/1024).toFixed(0)+' KB':'—',
+    fileExt:ext,
+    notes,
+    plan:isPlan?selectedPlan:null
+  };
+
+  const docs=loadDocs();
+  docs.push(newDoc);
+  saveDocs(docs);
+
+  closeModal('modal-upload-doc');
+  showMsg(isPlan?`Piano "${PLAN_LABELS[selectedPlan]}" salvato per ${userName}`:`Documento "${file.name}" caricato per ${userName}`);
+
+  // Reset
+  backToStep1();
+  document.getElementById('up-notes').value='';
+  renderDocumenti();
+}
+
+// Drag & drop
+const dz=document.getElementById('upload-drop-zone');
+if(dz){
+  dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag');});
+  dz.addEventListener('dragleave',()=>dz.classList.remove('drag'));
+  dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag');const f=e.dataTransfer.files[0];if(f){const inp=document.getElementById('up-file');const dt=new DataTransfer();dt.items.add(f);inp.files=dt.files;previewFile(inp);}});
+}
+renderDashboard();
+// Imposta date default filtri
+const today=new Date().toISOString().split('T')[0];
+const m=new Date(); m.setDate(1);
+document.querySelectorAll('input[type=date]').forEach(i=>{
+  if(i.id.includes('to')||i.id.includes('pay-to')) i.value=today;
+  if(i.id.includes('from')||i.id.includes('pay-from')) i.value=m.toISOString().split('T')[0];
+});
+</script>
+</body>
+</html>
