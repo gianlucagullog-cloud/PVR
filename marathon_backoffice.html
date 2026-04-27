@@ -255,6 +255,227 @@ textarea{resize:vertical;min-height:70px}
 .cfg-box h4{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);margin-bottom:10px;display:flex;align-items:center;gap:6px}
 .tg-preview-bubble{background:#e8f6fe;border-radius:12px;padding:14px;font-family:monospace;font-size:12px;line-height:1.7;color:#0a0a1a;min-height:70px;white-space:pre-wrap;word-break:break-word}
 .ms-preview-card{border-left:4px solid #6264A7;background:#f0f0ff;border-radius:var(--radius);padding:14px;min-height:70px}
+
+/* ── NAV HIGHLIGHT ── */
+.nav-btn-highlight{
+  color:var(--red)!important;
+  font-weight:700!important;
+  position:relative;
+}
+.nav-btn-highlight::after{
+  content:'';position:absolute;top:10px;right:8px;
+  width:6px;height:6px;border-radius:50%;background:var(--red);
+  animation:pulse-dot 1.5s ease-in-out infinite;
+}
+@keyframes pulse-dot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.6}}
+
+/* ── COMUNICAZIONI QUICK CARD ON DASHBOARD ── */
+.com-quick-card{
+  background:linear-gradient(135deg,#1a1a2e 0%,#2d1b3d 50%,#1a0a0e 100%);
+  border-radius:var(--radius-lg);padding:20px;color:#fff;
+  display:flex;align-items:center;justify-content:space-between;
+  box-shadow:0 4px 20px rgba(200,16,46,.25);margin-bottom:20px;
+  cursor:pointer;transition:transform .2s,box-shadow .2s;
+}
+.com-quick-card:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(200,16,46,.35)}
+.com-quick-card h4{font-size:15px;font-weight:700;margin-bottom:4px}
+.com-quick-card p{font-size:12px;opacity:.75;margin-bottom:14px}
+.com-quick-btns{display:flex;gap:8px;flex-wrap:wrap}
+.com-quick-btn{padding:7px 14px;border-radius:20px;font-size:11px;font-weight:700;border:none;cursor:pointer;transition:all .15s;font-family:var(--font)}
+.com-quick-btn.tg{background:#2AABEE;color:#fff}.com-quick-btn.tg:hover{background:#1a8fd1}
+.com-quick-btn.ms{background:#6264A7;color:#fff}.com-quick-btn.ms:hover{background:#4f5195}
+.com-quick-btn.ut{background:rgba(255,255,255,.2);color:#fff;border:1.5px solid rgba(255,255,255,.3)}.com-quick-btn.ut:hover{background:rgba(255,255,255,.3)}
+
+/* ── FIELD LABEL SHORTHAND ── */
+.field-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);margin-bottom:6px}
+
+/* ══════════════════════════════════
+   RESPONSIVE — Tablet ≤ 1024px
+══════════════════════════════════ */
+@media(max-width:1024px){
+  .cards-grid{grid-template-columns:repeat(2,1fr)}
+  .two-col{grid-template-columns:1fr}
+  .three-col{grid-template-columns:1fr 1fr}
+  .doc-type-grid{grid-template-columns:repeat(2,1fr)}
+  .quick-ops{grid-template-columns:1fr 1fr}
+  .plan-selector{grid-template-columns:1fr 1fr}
+  .header-ops{gap:4px}
+  .header-btn{font-size:10px;padding:4px 9px}
+  .dest-grid{grid-template-columns:1fr 1fr}
+}
+
+/* ══════════════════════════════════
+   RESPONSIVE — Mobile ≤ 700px
+══════════════════════════════════ */
+@media(max-width:700px){
+  /* Top banner */
+  .top-banner{flex-direction:column;gap:2px;padding:5px 12px;text-align:center;font-size:10px}
+
+  /* Header */
+  .header{flex-wrap:wrap;padding:8px 12px;gap:6px;min-height:auto;position:sticky;top:0}
+  .logo{font-size:22px;margin-right:auto}
+  .header-ops{display:none}
+  .header-account{border-left:none;padding-left:0;gap:8px;justify-content:flex-end;flex:1}
+  .account-row{display:none}
+  .user-badge{font-size:11px;padding:5px 10px}
+
+  /* Mobile bottom action bar */
+  .mobile-action-bar{
+    display:flex!important;
+    position:fixed;bottom:0;left:0;right:0;z-index:300;
+    background:var(--surface);border-top:2px solid var(--red);
+    padding:6px 8px;gap:5px;overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    box-shadow:0 -4px 20px rgba(0,0,0,.12);
+    scrollbar-width:none;
+  }
+  .mobile-action-bar::-webkit-scrollbar{display:none}
+  .mobile-action-bar .header-btn{font-size:10px;padding:7px 10px;white-space:nowrap;flex-shrink:0}
+
+  /* Nav */
+  .nav{padding:0 6px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .nav::-webkit-scrollbar{display:none}
+  .nav-btn{font-size:11px;padding:9px 10px;white-space:nowrap;flex-shrink:0}
+  .nav-btn-highlight::after{top:8px;right:6px}
+
+  /* Page */
+  .page{padding:12px 12px 80px}
+  .page-title{font-size:15px;margin-bottom:14px}
+
+  /* Cards */
+  .cards-grid{grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+  .card{padding:14px}
+  .card-value{font-size:18px}
+  .card-label{font-size:9px}
+
+  /* Quick ops */
+  .quick-ops{grid-template-columns:1fr;gap:8px;margin-bottom:12px}
+  .quick-op{padding:14px;display:flex;align-items:center;gap:12px;text-align:left}
+  .quick-op-icon{font-size:20px;margin-bottom:0;flex-shrink:0}
+
+  /* Layouts */
+  .two-col{grid-template-columns:1fr;gap:14px}
+  .three-col{grid-template-columns:1fr;gap:14px}
+  .dest-grid{grid-template-columns:1fr 1fr;gap:8px}
+
+  /* Referral */
+  .referral-box{flex-direction:column;gap:12px;padding:14px}
+  .qr-placeholder{display:none}
+
+  /* Sections */
+  .section-header{padding:10px 14px;flex-wrap:wrap;gap:6px}
+  .section-body{padding:12px}
+
+  /* Tables */
+  .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{min-width:540px;font-size:11px}
+  th{padding:6px 8px;font-size:9px}
+  td{padding:7px 8px}
+
+  /* iOS zoom prevention */
+  input,select,textarea{font-size:16px!important}
+
+  /* Filters */
+  .filters-bar{flex-direction:column;align-items:stretch;gap:6px}
+  .filters-bar select,.filters-bar input{width:100%!important;min-width:unset!important;font-size:16px!important}
+  .filters-bar .btn{width:100%;text-align:center}
+
+  /* Form grid */
+  .form-grid{grid-template-columns:1fr!important}
+  .form-grid.two{grid-template-columns:1fr!important}
+  .form-group.full{grid-column:span 1}
+
+  /* Plan selector */
+  .plan-selector{grid-template-columns:1fr!important}
+
+  /* Doc type grid */
+  .doc-type-grid{grid-template-columns:1fr 1fr;gap:8px}
+  .doc-type-card{padding:12px}
+  .doc-type-icon{font-size:20px;margin-bottom:5px}
+  .doc-type-name{font-size:11.5px}
+
+  /* Doc status bar */
+  .doc-status-bar{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .doc-stat{padding:10px 12px}
+  .doc-stat-num{font-size:17px}
+
+  /* Doc row */
+  .doc-row{flex-wrap:wrap;gap:6px;padding:10px 12px}
+  .doc-info{width:100%}
+  .doc-actions{width:100%;justify-content:flex-end}
+
+  /* Invoice */
+  .invoice-header{flex-direction:column;gap:8px}
+  .invoice-preview{padding:12px}
+
+  /* Modals — slide up */
+  .modal-overlay{align-items:flex-end}
+  .modal-box{
+    width:100%!important;max-width:100%!important;
+    border-radius:16px 16px 0 0;
+    max-height:92vh;overflow-y:auto;
+    padding:18px 14px;
+  }
+  .modal-title{font-size:14px}
+  .modal-actions{flex-direction:column;gap:8px}
+  .modal-actions .btn{width:100%;text-align:center;padding:11px}
+
+  /* Page headers with button */
+  #page-utenti > div:first-child,
+  #page-documenti > div:first-child{flex-direction:column;align-items:flex-start;gap:10px}
+  #page-utenti > div:first-child .btn,
+  #page-documenti > div:first-child .btn{width:100%;text-align:center}
+
+  /* Buttons */
+  .btn{padding:8px 12px;font-size:12px}
+  .btn-sm{padding:5px 9px;font-size:11px}
+
+  /* Msg toast */
+  #msg-global{left:12px;right:12px;top:auto;bottom:75px;min-width:unset}
+
+  /* ── COMUNICAZIONI RESPONSIVE ── */
+  .ch-tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:0}
+  .ch-tabs::-webkit-scrollbar{display:none}
+  .ch-tab{font-size:11px;padding:9px 12px;white-space:nowrap;flex-shrink:0}
+
+  .composer-wrap{padding:14px 12px}
+  .composer-wrap h3{font-size:13px}
+
+  .tpl-chips{gap:5px}
+  .tpl-chip{font-size:10.5px;padding:4px 9px}
+
+  .dest-grid{grid-template-columns:1fr 1fr}
+  .dest-card{padding:10px 12px;gap:8px}
+  .dest-name{font-size:12px}
+
+  .msg-area{min-height:100px;font-size:16px!important}
+
+  .img-upload-zone{padding:14px 10px}
+  .img-thumb{width:60px;height:60px}
+
+  .com-quick-card{flex-direction:column;align-items:flex-start;gap:12px}
+  .com-quick-btns{width:100%}
+  .com-quick-btn{flex:1;text-align:center}
+
+  .cfg-box{padding:12px}
+  .cfg-box h4{font-size:11px}
+
+  /* User list in rete */
+  #ut-user-list{max-height:160px}
+
+  /* Ch tabs content */
+  .ch-panel.active{display:block}
+}
+
+/* Small mobile ≤ 400px */
+@media(max-width:400px){
+  .cards-grid{grid-template-columns:1fr}
+  .dest-grid{grid-template-columns:1fr}
+  .doc-type-grid{grid-template-columns:1fr}
+  .nav-btn{font-size:10px;padding:8px 8px}
+  .card-value{font-size:15px}
+  .com-quick-btn{font-size:10px;padding:6px 10px}
+}
 </style>
 </head>
 <body>
@@ -276,6 +497,7 @@ textarea{resize:vertical;min-height:70px}
     <button class="header-btn" onclick="openModal('modal-paga-voucher')">🎟 Paga Voucher</button>
     <button class="header-btn ghost" onclick="openModal('modal-lista-contratti')">📋 Lista Contratti</button>
     <button class="header-btn ghost" onclick="showPage('pagamenti')">💸 Movimentazioni</button>
+    <button class="header-btn" onclick="showPage('comunicazioni')" style="background:linear-gradient(135deg,#e91e8c,var(--red));border-color:transparent;box-shadow:0 2px 8px rgba(233,30,140,.3)">📣 Comunica</button>
   </div>
   <div class="header-account">
     <div class="account-row">
@@ -285,6 +507,15 @@ textarea{resize:vertical;min-height:70px}
     </div>
     <div class="user-badge" onclick="openModal('modal-profilo')">PVR_001</div>
   </div>
+</div>
+
+<!-- MOBILE ACTION BAR -->
+<div class="mobile-action-bar" style="display:none">
+  <button class="header-btn" onclick="openModal('modal-crea-conto')">👤 Crea</button>
+  <button class="header-btn" onclick="openModal('modal-ricarica')">💳 Ricarica</button>
+  <button class="header-btn" onclick="openModal('modal-paga-voucher')">🎟 Voucher</button>
+  <button class="header-btn" onclick="openModal('modal-prelievo-pvr')">🏦 Prelievo</button>
+  <button class="header-btn" style="background:linear-gradient(135deg,#e91e8c,var(--red));border-color:transparent" onclick="showPage('comunicazioni')">📣 Comunica</button>
 </div>
 
 <!-- NAV -->
@@ -298,7 +529,7 @@ textarea{resize:vertical;min-height:70px}
   <button class="nav-btn" onclick="showPage('pagamenti',this)">Pagamenti Voucher</button>
   <button class="nav-btn" onclick="showPage('fatture',this)">Fatture</button>
   <button class="nav-btn" onclick="showPage('documenti',this)">📁 Documenti</button>
-  <button class="nav-btn" onclick="showPage('comunicazioni',this)">📣 Comunicazioni</button>
+  <button class="nav-btn nav-btn-highlight" onclick="showPage('comunicazioni',this)">📣 Comunicazioni</button>
 </div>
 
 <!-- ════════════════════════════════════ DASHBOARD ════════════════════════════════════ -->
@@ -308,6 +539,21 @@ textarea{resize:vertical;min-height:70px}
     <div class="card green"><div class="card-label">Saldo Utenti</div><div class="card-value green text-mono">18.430,00 €</div><div class="card-sub">12 utenti attivi</div></div>
     <div class="card blue"><div class="card-label">Prelevabile Utenti</div><div class="card-value blue text-mono">4.210,00 €</div><div class="card-sub">3 richieste in attesa</div></div>
     <div class="card orange"><div class="card-label">Commissioni Mese</div><div class="card-value orange text-mono">847,30 €</div><div class="card-sub">+12% vs mese scorso</div></div>
+  </div>
+
+
+  <!-- Comunicazioni quick card -->
+  <div class="com-quick-card" onclick="showPage('comunicazioni')">
+    <div>
+      <h4>📣 Comunicazioni Rete</h4>
+      <p>Invia messaggi a gruppi, canali e utenti della tua sottorete</p>
+      <div class="com-quick-btns">
+        <button class="com-quick-btn tg" onclick="event.stopPropagation();showPage('comunicazioni');setTimeout(function(){showCh('telegram')},100)">📱 Telegram</button>
+        <button class="com-quick-btn ms" onclick="event.stopPropagation();showPage('comunicazioni');setTimeout(function(){showCh('teams')},100)">💬 Teams</button>
+        <button class="com-quick-btn ut" onclick="event.stopPropagation();showPage('comunicazioni');setTimeout(function(){showCh('utenti')},100)">👥 Utenti Rete</button>
+      </div>
+    </div>
+    <div style="font-size:52px;opacity:.3;flex-shrink:0">📣</div>
   </div>
 
   <div class="quick-ops">
