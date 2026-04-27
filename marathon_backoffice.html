@@ -215,176 +215,46 @@ textarea{resize:vertical;min-height:70px}
 .plan-option h5{font-size:13px;font-weight:700;margin-bottom:6px;color:var(--text)}
 .plan-option ul{font-size:11.5px;color:var(--text2);list-style:none;padding:0}
 .plan-option ul li::before{content:'› ';color:var(--red)}
-/* ════════════════════════════════════
-   RESPONSIVE
-   ════════════════════════════════════ */
 
-/* Tablet ≤ 1024px */
-@media(max-width:1024px){
-  .cards-grid{grid-template-columns:repeat(2,1fr)}
-  .two-col{grid-template-columns:1fr}
-  .three-col{grid-template-columns:1fr 1fr}
-  .doc-type-grid{grid-template-columns:repeat(2,1fr)}
-  .quick-ops{grid-template-columns:1fr 1fr}
-  .header-ops{gap:4px}
-  .header-btn{font-size:10px;padding:4px 8px}
-}
-
-/* Mobile ≤ 700px */
-@media(max-width:700px){
-  /* Top banner */
-  .top-banner{flex-direction:column;gap:2px;padding:6px 12px;text-align:center;font-size:10px}
-
-  /* Header */
-  .header{flex-wrap:wrap;padding:8px 12px;gap:8px;min-height:auto;position:sticky;top:0}
-  .logo{font-size:22px;margin-right:0}
-  .header-ops{display:none}
-  .header-account{border-left:none;padding-left:0;gap:8px;flex:1;justify-content:flex-end}
-  .account-row{display:none}
-  .user-badge{font-size:11px;padding:6px 12px}
-
-  /* Mobile bottom action bar */
-  .mobile-action-bar{
-    display:flex!important;
-    position:fixed;bottom:0;left:0;right:0;z-index:300;
-    background:var(--surface);border-top:2px solid var(--red);
-    padding:8px 10px;gap:6px;overflow-x:auto;
-    -webkit-overflow-scrolling:touch;
-    box-shadow:0 -4px 20px rgba(0,0,0,.12);
-    scrollbar-width:none;
-  }
-  .mobile-action-bar::-webkit-scrollbar{display:none}
-  .mobile-action-bar .header-btn{font-size:10px;padding:7px 10px;white-space:nowrap;flex-shrink:0}
-
-  /* Nav */
-  .nav{padding:0 8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-  .nav::-webkit-scrollbar{display:none}
-  .nav-btn{font-size:11px;padding:9px 10px;white-space:nowrap;flex-shrink:0}
-
-  /* Page */
-  .page{padding:14px 12px 80px}
-  .page-title{font-size:15px;margin-bottom:14px}
-
-  /* Cards grid */
-  .cards-grid{grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
-  .card{padding:14px}
-  .card-value{font-size:18px}
-  .card-label{font-size:9px}
-  .card-sub{font-size:10px}
-
-  /* Quick ops */
-  .quick-ops{grid-template-columns:1fr;gap:10px;margin-bottom:14px}
-  .quick-op{padding:14px;display:flex;align-items:center;gap:12px;text-align:left}
-  .quick-op-icon{font-size:22px;margin-bottom:0;flex-shrink:0}
-
-  /* Two / three col */
-  .two-col{grid-template-columns:1fr;gap:14px}
-  .three-col{grid-template-columns:1fr;gap:14px}
-
-  /* Referral box */
-  .referral-box{flex-direction:column;gap:14px;padding:16px}
-  .qr-placeholder{display:none}
-
-  /* Sections */
-  .section-header{padding:10px 14px;flex-wrap:wrap;gap:8px}
-  .section-body{padding:14px}
-
-  /* Tables */
-  .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
-  table{min-width:540px;font-size:11.5px}
-  th{padding:7px 10px;font-size:9.5px}
-  td{padding:8px 10px}
-
-  /* Filters bar */
-  .filters-bar{flex-direction:column;align-items:stretch;gap:8px}
-  .filters-bar label{font-size:11px}
-  .filters-bar select,
-  .filters-bar input{width:100%!important;min-width:unset!important;font-size:16px!important;padding:9px 10px}
-  .filters-bar .btn{width:100%;text-align:center}
-
-  /* Form grid */
-  .form-grid{grid-template-columns:1fr!important}
-  .form-grid.two{grid-template-columns:1fr!important}
-  .form-group.full{grid-column:span 1}
-  input,select,textarea{font-size:16px!important}
-
-  /* Stat rows */
-  .stat-row-value{font-size:13px}
-
-  /* Plan selector */
-  .plan-selector{grid-template-columns:1fr!important}
-
-  /* Doc type grid */
-  .doc-type-grid{grid-template-columns:1fr 1fr;gap:10px}
-  .doc-type-card{padding:12px}
-  .doc-type-icon{font-size:22px;margin-bottom:6px}
-  .doc-type-name{font-size:12px}
-  .doc-type-desc{font-size:10px}
-
-  /* Doc status bar */
-  .doc-status-bar{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .doc-stat{padding:10px 12px}
-  .doc-stat-num{font-size:18px}
-
-  /* Doc row */
-  .doc-row{flex-wrap:wrap;gap:8px;padding:10px 12px}
-  .doc-info{min-width:0;width:100%}
-  .doc-actions{width:100%;justify-content:flex-end}
-  .doc-name{font-size:12px}
-  .doc-meta{font-size:10px}
-
-  /* Invoice preview */
-  .invoice-header{flex-direction:column;gap:10px}
-  .invoice-preview{padding:14px}
-
-  /* Alerts */
-  .alert{font-size:11.5px;padding:10px 12px}
-
-  /* Modals — slide up from bottom */
-  .modal-overlay{align-items:flex-end}
-  .modal-box{
-    width:100%!important;
-    max-width:100%!important;
-    border-radius:16px 16px 0 0;
-    max-height:92vh;
-    overflow-y:auto;
-    padding:20px 14px;
-  }
-  .modal-title{font-size:14px;margin-bottom:14px}
-  .modal-actions{flex-direction:column;gap:8px}
-  .modal-actions .btn{width:100%;text-align:center;padding:11px}
-
-  /* Page-specific: utenti header row */
-  #page-utenti > div:first-child,
-  #page-documenti > div:first-child{flex-direction:column;align-items:flex-start;gap:10px}
-  #page-utenti > div:first-child .btn,
-  #page-documenti > div:first-child .btn{width:100%;text-align:center}
-
-  /* Stats page */
-  #stats-sport,#stats-casino,#stats-virtual{padding:12px}
-
-  /* Commissioni plan card */
-  .plan-card{padding:12px}
-
-  /* Buttons */
-  .btn{padding:8px 12px;font-size:12px}
-  .btn-sm{padding:5px 9px;font-size:11px}
-
-  /* Msg global — top center on mobile */
-  #msg-global{left:12px;right:12px;top:auto;bottom:70px;min-width:unset}
-
-  /* Modal cat grid */
-  #modal-cat-grid{grid-template-columns:1fr 1fr!important}
-}
-
-/* Small mobile ≤ 400px */
-@media(max-width:400px){
-  .cards-grid{grid-template-columns:1fr}
-  .doc-type-grid{grid-template-columns:1fr}
-  #modal-cat-grid{grid-template-columns:1fr!important}
-  .nav-btn{font-size:10px;padding:8px 8px}
-  .card-value{font-size:16px}
-}
+/* ── COMUNICAZIONI ── */
+.ch-tabs{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:20px}
+.ch-tab{padding:10px 20px;border:none;background:transparent;font-family:var(--font);font-size:13px;font-weight:500;color:var(--text2);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .15s;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.ch-tab:hover{color:var(--text);background:var(--surface2)}
+.ch-tab.active{color:var(--text);border-bottom-color:var(--red);font-weight:600}
+.ch-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;display:inline-block}
+.ch-dot.tg{background:#2AABEE}.ch-dot.ms{background:#6264A7}
+.ch-panel{display:none}.ch-panel.active{display:block}
+.composer-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;box-shadow:var(--shadow);margin-bottom:20px}
+.composer-wrap h3{font-size:14px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.tpl-chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+.tpl-chip{padding:4px 11px;border:1.5px solid var(--border);border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;background:var(--surface2);color:var(--text2);transition:all .15s}
+.tpl-chip:hover{border-color:var(--red);color:var(--red);background:var(--red-light)}
+.dest-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.dest-card{border:2px solid var(--border);border-radius:var(--radius);padding:12px 14px;cursor:pointer;transition:all .15s;position:relative;display:flex;align-items:center;gap:10px}
+.dest-card:hover{border-color:var(--red)}.dest-card.sel{border-color:var(--red);background:var(--red-light)}
+.dest-card.sel::after{content:'✓';position:absolute;top:7px;right:10px;font-size:11px;font-weight:700;color:var(--red)}
+.dest-name{font-size:12.5px;font-weight:600}.dest-desc{font-size:10.5px;color:var(--text2)}
+.msg-area{width:100%;min-height:120px;resize:vertical;background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font);font-size:13px;padding:11px 13px;outline:none;transition:border-color .15s;line-height:1.6;box-sizing:border-box}
+.msg-area:focus{border-color:var(--red);background:var(--surface)}
+.char-cnt{font-size:10.5px;color:var(--text3);text-align:right;margin-top:3px}
+.char-cnt.warn{color:var(--orange)}.char-cnt.over{color:var(--red)}
+.img-upload-zone{border:2px dashed var(--border2);border-radius:var(--radius);padding:16px;text-align:center;cursor:pointer;background:var(--surface2);transition:all .2s;position:relative;margin-bottom:12px}
+.img-upload-zone:hover,.img-upload-zone.drag{border-color:var(--red);background:var(--red-light)}
+.img-upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.img-preview-grid{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.img-thumb{position:relative;width:72px;height:72px;border-radius:var(--radius-sm);overflow:hidden;border:1.5px solid var(--border);flex-shrink:0}
+.img-thumb img{width:100%;height:100%;object-fit:cover}
+.img-thumb-del{position:absolute;top:2px;right:2px;background:rgba(0,0,0,.6);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+.log-row{display:flex;align-items:flex-start;gap:10px;padding:11px 0;border-bottom:1px solid var(--border)}
+.log-row:last-child{border-bottom:none}
+.log-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.log-body{flex:1;min-width:0}
+.log-text{font-size:12px;color:var(--text2);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.log-meta{font-size:10.5px;color:var(--text3);margin-top:2px}
+.cfg-box{background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:12px}
+.cfg-box h4{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.tg-preview-bubble{background:#e8f6fe;border-radius:12px;padding:14px;font-family:monospace;font-size:12px;line-height:1.7;color:#0a0a1a;min-height:70px;white-space:pre-wrap;word-break:break-word}
+.ms-preview-card{border-left:4px solid #6264A7;background:#f0f0ff;border-radius:var(--radius);padding:14px;min-height:70px}
 </style>
 </head>
 <body>
@@ -417,15 +287,6 @@ textarea{resize:vertical;min-height:70px}
   </div>
 </div>
 
-<!-- MOBILE ACTION BAR (visible only on mobile) -->
-<div class="mobile-action-bar" style="display:none">
-  <button class="header-btn" onclick="openModal('modal-crea-conto')">👤 Crea Conto</button>
-  <button class="header-btn" onclick="openModal('modal-ricarica')">💳 Ricarica</button>
-  <button class="header-btn" onclick="openModal('modal-paga-voucher')">🎟 Voucher</button>
-  <button class="header-btn" onclick="openModal('modal-prelievo-pvr')">🏦 Prelievo</button>
-  <button class="header-btn ghost" onclick="openModal('modal-lista-contratti')">📋 Contratti</button>
-</div>
-
 <!-- NAV -->
 <div class="nav">
   <button class="nav-btn active" onclick="showPage('dashboard',this)">Dashboard</button>
@@ -437,6 +298,7 @@ textarea{resize:vertical;min-height:70px}
   <button class="nav-btn" onclick="showPage('pagamenti',this)">Pagamenti Voucher</button>
   <button class="nav-btn" onclick="showPage('fatture',this)">Fatture</button>
   <button class="nav-btn" onclick="showPage('documenti',this)">📁 Documenti</button>
+  <button class="nav-btn" onclick="showPage('comunicazioni',this)">📣 Comunicazioni</button>
 </div>
 
 <!-- ════════════════════════════════════ DASHBOARD ════════════════════════════════════ -->
@@ -1116,6 +978,7 @@ function showPage(id, btn) {
   if(id==='pagamenti') renderPayments();
   if(id==='fatture') { renderInvoices(); buildInvoicePreview(); }
   if(id==='documenti') renderDocumenti();
+  if(id==='comunicazioni') initComunicazioni();
 }
 function openModal(id) {
   const m=document.getElementById(id);
@@ -1747,5 +1610,610 @@ document.querySelectorAll('input[type=date]').forEach(i=>{
   if(i.id.includes('from')||i.id.includes('pay-from')) i.value=m.toISOString().split('T')[0];
 });
 </script>
+
+<!-- ═══════════════ COMUNICAZIONI ═══════════════ -->
+<div class="page" id="page-comunicazioni">
+  <div class="page-title">📣 Comunicazioni</div>
+  <div class="ch-tabs">
+    <button class="ch-tab active" id="chtab-telegram" onclick="showCh('telegram')"><span class="ch-dot tg"></span>Telegram</button>
+    <button class="ch-tab" id="chtab-teams" onclick="showCh('teams')"><span class="ch-dot ms"></span>Microsoft Teams</button>
+    <button class="ch-tab" id="chtab-utenti" onclick="showCh('utenti')">👥 Utenti Rete</button>
+    <button class="ch-tab" id="chtab-config" onclick="showCh('config')">⚙️ Config</button>
+  </div>
+
+  <!-- TELEGRAM -->
+  <div class="ch-panel active" id="chp-telegram">
+    <div class="two-col">
+      <div>
+        <div class="composer-wrap">
+          <h3>✉️ Telegram</h3>
+          <div class="field-label">Template</div>
+          <div class="tpl-chips">
+            <span class="tpl-chip" onclick="useTpl('tg','promo')">🎁 Promo</span>
+            <span class="tpl-chip" onclick="useTpl('tg','manutenzione')">🔧 Manutenzione</span>
+            <span class="tpl-chip" onclick="useTpl('tg','commissioni')">💰 Commissioni</span>
+            <span class="tpl-chip" onclick="useTpl('tg','urgente')">🚨 Urgente</span>
+            <span class="tpl-chip" onclick="useTpl('tg','benvenuto')">👋 Benvenuto</span>
+            <span class="tpl-chip" onclick="useTpl('tg','recap')">📊 Recap</span>
+          </div>
+          <div class="field-label" style="margin-top:12px">Destinazione</div>
+          <div class="dest-grid" id="tg-dests"></div>
+          <div class="field-label">Messaggio <span style="font-weight:400;text-transform:none;font-size:10px;color:var(--text3)"> — *grassetto* _corsivo_ `codice`</span></div>
+          <textarea class="msg-area" id="tg-text" placeholder="Scrivi il messaggio..." oninput="tgPreview();charCount('tg-text','tg-cnt',4096)"></textarea>
+          <div class="char-cnt" id="tg-cnt">0 / 4096</div>
+          <div class="field-label" style="margin-top:12px">Immagini <span style="font-weight:400;text-transform:none;font-size:10px;color:var(--text3)">JPG · PNG · GIF — Max 10MB</span></div>
+          <div class="img-preview-grid" id="tg-img-grid"></div>
+          <div class="img-upload-zone" id="tg-drop">
+            <input type="file" id="tg-img-input" accept="image/*" multiple onchange="addImgs('tg',this)">
+            <span style="font-size:20px">🖼</span>
+            <div style="font-size:12px;color:var(--text2);margin-top:4px"><strong>Clicca o trascina</strong> immagini</div>
+          </div>
+          <div style="display:flex;gap:12px;margin-top:10px;flex-wrap:wrap">
+            <label style="font-size:11px;font-weight:600;color:var(--text2);display:flex;align-items:center;gap:5px"><input type="checkbox" id="tg-pin"> 📌 Fissa</label>
+            <label style="font-size:11px;font-weight:600;color:var(--text2);display:flex;align-items:center;gap:5px"><input type="checkbox" id="tg-sched-chk" onchange="toggleSched('tg')"> ⏰ Programma</label>
+            <input type="datetime-local" id="tg-sched-dt" style="display:none;font-size:12px;padding:5px 8px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-family:var(--font)">
+          </div>
+          <div style="display:flex;gap:8px;margin-top:12px">
+            <button class="btn btn-secondary" onclick="tgPreview()">👁 Anteprima</button>
+            <button class="btn btn-primary" onclick="sendTg()" style="flex:1">📤 Invia su Telegram</button>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="section" style="margin-bottom:14px">
+          <div class="section-header"><span class="section-title"><span class="dot"></span>Anteprima</span></div>
+          <div class="section-body">
+            <div style="background:#e8f6fe;border-radius:12px;padding:14px;font-family:monospace;font-size:12px;line-height:1.7;white-space:pre-wrap;word-break:break-word;min-height:70px" id="tg-prev-txt">Scrivi un messaggio...</div>
+            <div id="tg-prev-imgs" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"></div>
+            <div style="font-size:10px;color:var(--text3);margin-top:6px;text-align:right" id="tg-prev-meta">—</div>
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-header"><span class="section-title"><span class="dot"></span>Storico</span><button class="btn btn-secondary btn-sm" onclick="clearCh('telegram')">Svuota</button></div>
+          <div class="section-body" style="padding:0 18px" id="tg-log-wrap"><div class="empty-state" style="padding:20px"><p>Nessun messaggio inviato</p></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAMS -->
+  <div class="ch-panel" id="chp-teams">
+    <div class="alert alert-info" style="font-size:12px;margin-bottom:16px">
+      <div><strong>⚠️ Microsoft ha deprecato i vecchi Connector Webhook.</strong> Usa un <strong>Power Automate Workflow</strong>: in Teams → canale → ··· → Workflows → "Post to a channel when a webhook request is received" → copia l'URL e incollalo in Configurazione.</div>
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="composer-wrap">
+          <h3>💬 Microsoft Teams</h3>
+          <div class="tpl-chips">
+            <span class="tpl-chip" onclick="useTpl('ms','promo')">🎁 Promo</span>
+            <span class="tpl-chip" onclick="useTpl('ms','manutenzione')">🔧 Manutenzione</span>
+            <span class="tpl-chip" onclick="useTpl('ms','commissioni')">💰 Commissioni</span>
+            <span class="tpl-chip" onclick="useTpl('ms','urgente')">🚨 Urgente</span>
+            <span class="tpl-chip" onclick="useTpl('ms','benvenuto')">👋 Benvenuto</span>
+            <span class="tpl-chip" onclick="useTpl('ms','recap')">📊 Recap</span>
+          </div>
+          <div class="field-label" style="margin-top:12px">Canale destinazione</div>
+          <div class="dest-grid" id="ms-dests"></div>
+          <div class="field-label">Titolo</div>
+          <input id="ms-title" placeholder="es. 📢 Aggiornamento PVR" style="margin-bottom:10px;width:100%">
+          <div class="field-label">Messaggio <span style="font-weight:400;text-transform:none;font-size:10px;color:var(--text3)"> — **grassetto** *corsivo*</span></div>
+          <textarea class="msg-area" id="ms-text" placeholder="Scrivi il messaggio..." oninput="msPreview();charCount('ms-text','ms-cnt',28000)"></textarea>
+          <div class="char-cnt" id="ms-cnt">0 / 28000</div>
+          <div class="field-label" style="margin-top:12px">Immagini <span style="font-weight:400;text-transform:none;font-size:10px;color:var(--text3)">Nota: le immagini in Teams richiedono URL pubblico — verranno mostrate nel log</span></div>
+          <div class="img-preview-grid" id="ms-img-grid"></div>
+          <div class="img-upload-zone" id="ms-drop">
+            <input type="file" id="ms-img-input" accept="image/*" multiple onchange="addImgs('ms',this)">
+            <span style="font-size:20px">🖼</span>
+            <div style="font-size:12px;color:var(--text2);margin-top:4px"><strong>Clicca o trascina</strong> immagini</div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:14px">
+            <button class="btn btn-secondary" onclick="msPreview()">👁 Anteprima</button>
+            <button class="btn btn-primary" onclick="sendMs()" style="flex:1;background:#6264A7;border-color:#6264A7">📤 Invia su Teams</button>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="section" style="margin-bottom:14px">
+          <div class="section-header"><span class="section-title"><span class="dot"></span>Anteprima card</span></div>
+          <div class="section-body">
+            <div style="border-left:4px solid #6264A7;background:#f0f0ff;border-radius:var(--radius);padding:14px;min-height:70px">
+              <div id="ms-prev-title" style="font-weight:700;font-size:14px;color:#6264A7;margin-bottom:8px">Titolo</div>
+              <div id="ms-prev-txt" style="font-size:13px;line-height:1.6;white-space:pre-wrap;word-break:break-word">Scrivi un messaggio...</div>
+            </div>
+            <div id="ms-prev-imgs" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"></div>
+            <div style="font-size:10px;color:var(--text3);margin-top:6px;text-align:right" id="ms-prev-meta">—</div>
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-header"><span class="section-title"><span class="dot"></span>Storico</span><button class="btn btn-secondary btn-sm" onclick="clearCh('teams')">Svuota</button></div>
+          <div class="section-body" style="padding:0 18px" id="ms-log-wrap"><div class="empty-state" style="padding:20px"><p>Nessun messaggio inviato</p></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- UTENTI RETE -->
+  <div class="ch-panel" id="chp-utenti">
+    <div class="two-col">
+      <div>
+        <div class="composer-wrap">
+          <h3>👥 Messaggio agli Utenti Rete</h3>
+          <div class="field-label">Seleziona destinatari</div>
+          <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+            <button class="btn btn-secondary btn-sm" onclick="selAllUsers(true)">Seleziona tutti</button>
+            <button class="btn btn-secondary btn-sm" onclick="selAllUsers(false)">Deseleziona</button>
+            <select id="ut-filter-status" onchange="renderUserSel()" style="font-size:12px;padding:6px 10px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface2);font-family:var(--font)">
+              <option value="all">Tutti gli utenti</option>
+              <option value="active">Solo attivi</option>
+              <option value="suspended">Solo sospesi</option>
+            </select>
+          </div>
+          <div id="ut-user-list" style="max-height:220px;overflow-y:auto;border:1.5px solid var(--border);border-radius:var(--radius);background:var(--surface2);margin-bottom:14px"></div>
+          <div class="field-label">Template</div>
+          <div class="tpl-chips" style="margin-bottom:10px">
+            <span class="tpl-chip" onclick="useTpl('ut','promo')">🎁 Promo</span>
+            <span class="tpl-chip" onclick="useTpl('ut','manutenzione')">🔧 Manutenzione</span>
+            <span class="tpl-chip" onclick="useTpl('ut','commissioni')">💰 Commissioni</span>
+            <span class="tpl-chip" onclick="useTpl('ut','urgente')">🚨 Urgente</span>
+            <span class="tpl-chip" onclick="useTpl('ut','benvenuto')">👋 Benvenuto</span>
+          </div>
+          <div class="field-label">Messaggio</div>
+          <textarea class="msg-area" id="ut-text" placeholder="Scrivi il messaggio per gli utenti selezionati..." oninput="charCount('ut-text','ut-cnt',4096)"></textarea>
+          <div class="char-cnt" id="ut-cnt">0 / 4096</div>
+          <div class="field-label" style="margin-top:12px">Immagini</div>
+          <div class="img-preview-grid" id="ut-img-grid"></div>
+          <div class="img-upload-zone" id="ut-drop">
+            <input type="file" id="ut-img-input" accept="image/*" multiple onchange="addImgs('ut',this)">
+            <span style="font-size:20px">🖼</span>
+            <div style="font-size:12px;color:var(--text2);margin-top:4px"><strong>Clicca o trascina</strong> immagini</div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:14px">
+            <button class="btn btn-primary" onclick="sendToUsers()" style="flex:1">📤 Invia via Telegram Bot</button>
+          </div>
+          <div class="alert alert-info" style="font-size:11.5px;margin-top:12px">Gli utenti devono aver avviato una chat con il bot e aver condiviso il loro Chat ID in Configurazione.</div>
+        </div>
+      </div>
+      <div>
+        <div class="section" style="margin-bottom:14px">
+          <div class="section-header"><span class="section-title"><span class="dot"></span>Riepilogo invio</span></div>
+          <div class="section-body" id="ut-summary">
+            <div class="empty-state" style="padding:20px"><p>Seleziona utenti e scrivi un messaggio</p></div>
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-header"><span class="section-title"><span class="dot"></span>Storico invii di gruppo</span><button class="btn btn-secondary btn-sm" onclick="clearCh('utenti')">Svuota</button></div>
+          <div class="section-body" style="padding:0 18px" id="ut-log-wrap"><div class="empty-state" style="padding:20px"><p>Nessun messaggio inviato</p></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIG -->
+  <div class="ch-panel" id="chp-config">
+    <div class="two-col">
+      <div class="section">
+        <div class="section-header"><span class="section-title"><span class="ch-dot tg" style="width:10px;height:10px"></span>Configurazione Telegram</span></div>
+        <div class="section-body">
+          <div class="alert alert-info" style="font-size:12px">Apri Telegram → cerca <strong>@BotFather</strong> → /newbot → segui le istruzioni → copia il token qui sotto.</div>
+          <div class="cfg-box">
+            <h4><span class="ch-dot tg"></span>Bot Token</h4>
+            <div class="form-group" style="margin-bottom:10px"><label>Token</label><input type="password" id="cfg-tg-tok" placeholder="123456789:ABCdef..." oninput="saveCfg()"><small style="color:var(--text2)">Da @BotFather → /mybots → API Token</small></div>
+            <button class="btn btn-secondary btn-sm" onclick="testTgBot()">🔗 Testa connessione</button>
+            <span id="tg-test-res" style="font-size:11px;margin-left:8px"></span>
+          </div>
+          <div class="cfg-box">
+            <h4><span class="ch-dot tg"></span>Gruppi / Canali</h4>
+            <div id="tg-chats-cfg"></div>
+            <button class="btn btn-secondary btn-sm" onclick="addTgChat()" style="margin-top:10px">➕ Aggiungi</button>
+          </div>
+          <div class="cfg-box">
+            <h4>👥 Chat ID Utenti Rete</h4>
+            <div style="font-size:11.5px;color:var(--text2);margin-bottom:10px">Ogni utente deve avviare il bot con /start. Il Chat ID appare nei /getUpdates del bot.</div>
+            <div id="ut-chatids-cfg"></div>
+            <button class="btn btn-secondary btn-sm" onclick="saveUtChatIds()" style="margin-top:10px">💾 Salva Chat ID</button>
+          </div>
+          <div class="cfg-box">
+            <h4>📖 Come ottenere il Chat ID</h4>
+            <div style="font-size:11.5px;color:var(--text2);line-height:1.8">1. L'utente cerca il tuo bot su Telegram → /start<br>2. Vai su <code style="background:var(--surface);padding:1px 5px;border-radius:3px;font-size:10px">api.telegram.org/bot[TOKEN]/getUpdates</code><br>3. Trova <code style="background:var(--surface);padding:1px 5px;border-radius:3px;font-size:10px">"from":{"id":</code> — quello è il Chat ID dell'utente</div>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header"><span class="section-title"><span class="ch-dot ms" style="width:10px;height:10px"></span>Configurazione Teams</span></div>
+        <div class="section-body">
+          <div class="alert alert-info" style="font-size:12px">
+            <strong>⚠️ I vecchi Connector Webhook sono deprecati.</strong><br>
+            Usa <strong>Power Automate</strong>: in Teams → canale → ··· → <strong>Workflows</strong> → cerca "Post to a channel when a webhook request is received" → Aggiungi → copia URL.
+          </div>
+          <div class="cfg-box">
+            <h4><span class="ch-dot ms"></span>Tipo webhook</h4>
+            <div style="display:flex;gap:10px;margin-bottom:12px">
+              <label style="font-size:12px;font-weight:600;display:flex;align-items:center;gap:6px"><input type="radio" name="ms-wh-type" value="powerautomate" id="ms-wh-pa" checked> Power Automate (consigliato)</label>
+              <label style="font-size:12px;font-weight:600;display:flex;align-items:center;gap:6px"><input type="radio" name="ms-wh-type" value="connector" id="ms-wh-co"> Vecchio Connector</label>
+            </div>
+          </div>
+          <div class="cfg-box">
+            <h4><span class="ch-dot ms"></span>Canali</h4>
+            <div id="ms-chs-cfg"></div>
+            <button class="btn btn-secondary btn-sm" onclick="addMsCh()" style="margin-top:10px">➕ Aggiungi canale</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════════════════ COMUNICAZIONI JS ════════════════
+var comImgs={tg:[],ms:[],ut:[]};
+var selTgChat=null, selMsCh=null, selUtUsers={};
+
+var COM_TPLS={
+  promo:{tg:'🎁 *PROMOZIONE ESCLUSIVA*\n\nAbbiamo una promozione speciale!\n✅ Bonus sul primo deposito\n⏰ Valida fino al {data}\n\n_Marathon_',ms:'🎁 **PROMOZIONE ESCLUSIVA**\n\nAbbiamo una promozione speciale!\n✅ Bonus sul primo deposito\n⏰ Valida fino al {data}',ut:'🎁 *PROMOZIONE ESCLUSIVA*\n\nCaro {nome},\nabbiamo una promozione speciale per te!\n✅ Bonus sul primo deposito\n⏰ Valida fino al {data}\n\n_Marathon_'},
+  manutenzione:{tg:'🔧 *MANUTENZIONE PROGRAMMATA*\n\nLa piattaforma sarà offline il *{data}*\ndalle *02:00* alle *04:00*.\n\nCi scusiamo per il disagio.\n_Team Marathon_',ms:'🔧 **MANUTENZIONE PROGRAMMATA**\n\nLa piattaforma sarà offline il **{data}**\ndalle **02:00** alle **04:00**.\n\n*Team Marathon*',ut:'🔧 *MANUTENZIONE PROGRAMMATA*\n\nCaro {nome},\nla piattaforma sarà offline il *{data}* dalle *02:00* alle *04:00*.\n\nCi scusiamo per il disagio.\n_Team Marathon_'},
+  commissioni:{tg:'💰 *ACCREDITO COMMISSIONI — {mese}*\n\nLe commissioni sono state accreditate.\nAccedi al backoffice per i dettagli.\n\n_Marathon_',ms:'💰 **ACCREDITO COMMISSIONI — {mese}**\n\nLe commissioni sono state accreditate.\nAccedi al backoffice per i dettagli.',ut:'💰 *AGGIORNAMENTO SALDO — {mese}*\n\nCaro {nome},\nil tuo saldo è stato aggiornato.\nAccedi al portale per i dettagli.\n\n_Marathon_'},
+  urgente:{tg:'🚨 *COMUNICAZIONE URGENTE*\n\nInserisci qui il testo.\n\nPer assistenza contatta il supporto.\n_Marathon Operations_',ms:'🚨 **COMUNICAZIONE URGENTE**\n\nInserisci qui il testo.\n\nPer assistenza contatta il supporto.',ut:'🚨 *COMUNICAZIONE URGENTE*\n\nCaro {nome},\ninserisci qui il testo.\n\nPer assistenza contatta il supporto.\n_Marathon_'},
+  benvenuto:{tg:'👋 *Benvenuto in Marathon!*\n\nIl tuo account è attivo.\nBuona fortuna! 🍀\n\n_Marathon_',ms:'👋 **Benvenuto in Marathon!**\n\nIl tuo account è attivo.\nBuona fortuna! 🍀',ut:'👋 *Benvenuto in Marathon, {nome}!*\n\nIl tuo account è attivo.\nPuoi ora accedere a tutti i nostri servizi.\n\nBuona fortuna! 🍀\n_Marathon_'},
+  recap:{tg:'📊 *RECAP SETTIMANALE*\n\n🎯 Performance rete:\n• Turnover: — €\n• GGR: — €\n• Nuovi utenti: —\n• Commissioni: — €\n\n_Marathon Analytics_',ms:'📊 **RECAP SETTIMANALE**\n\n🎯 Performance rete:\n- Turnover: — €\n- GGR: — €\n- Nuovi utenti: —\n- Commissioni: — €',ut:''}
+};
+
+function loadCfg(){try{return JSON.parse(localStorage.getItem('pvr_com3')||'{}')}catch(e){return {}}}
+function saveCfg(){var cfg=loadCfg();var t=document.getElementById('cfg-tg-tok');if(t)cfg.tgTok=t.value;localStorage.setItem('pvr_com3',JSON.stringify(cfg));}
+function loadLog(ch){try{return JSON.parse(localStorage.getItem('pvr_log3_'+ch)||'[]')}catch(e){return []}}
+function saveLog(ch,l){localStorage.setItem('pvr_log3_'+ch,JSON.stringify(l.slice(0,50)))}
+
+function showCh(ch){
+  ['telegram','teams','utenti','config'].forEach(function(c){
+    var panel=document.getElementById('chp-'+c);
+    var tab=document.getElementById('chtab-'+c);
+    if(panel){panel.className='ch-panel'+(c===ch?' active':'');}
+    if(tab){tab.className='ch-tab'+(c===ch?' active':'');}
+  });
+  if(ch==='config') renderCfg();
+  else if(ch==='telegram'){renderTgDests();renderLog('telegram');}
+  else if(ch==='teams'){renderMsDests();renderLog('teams');}
+  else if(ch==='utenti'){renderUserSel();renderLog('utenti');}
+}
+
+function initComunicazioni(){
+  var cfg=loadCfg();
+  var t=document.getElementById('cfg-tg-tok'); if(t) t.value=cfg.tgTok||'';
+  renderTgDests(); renderMsDests(); renderUserSel();
+  renderLog('telegram'); renderLog('teams'); renderLog('utenti');
+  setupDrop('tg'); setupDrop('ms'); setupDrop('ut');
+}
+
+function getDests(){
+  var cfg=loadCfg();
+  return {
+    tgChats: cfg.tgChats||[{id:'-1001234567890',name:'Gruppo PVR Italia',type:'group'},{id:'-1009876543210',name:'Canale Notizie Marathon',type:'channel'}],
+    msChannels: cfg.msChannels||[{id:'ch1',name:'Canale Generale',url:'',type:'pa'},{id:'ch2',name:'Canale Affiliati',url:'',type:'pa'}]
+  };
+}
+
+function renderTgDests(){
+  var d=getDests(),el=document.getElementById('tg-dests');if(!el)return;
+  el.innerHTML=d.tgChats.map(function(c){
+    var icon=c.type==='channel'?'📢':'👥';
+    return '<div class="dest-card'+(selTgChat===c.id?' sel':'')+'" onclick="selTg(\''+c.id+'\')">'
+      +'<span style="font-size:20px">'+icon+'</span>'
+      +'<div><div class="dest-name">'+esc(c.name)+'</div><div class="dest-desc">'+(c.type==='channel'?'Canale':'Gruppo')+'</div></div></div>';
+  }).join('');
+}
+function renderMsDests(){
+  var d=getDests(),el=document.getElementById('ms-dests');if(!el)return;
+  el.innerHTML=d.msChannels.map(function(c){
+    return '<div class="dest-card'+(selMsCh===c.id?' sel':'')+'" onclick="selMs(\''+c.id+'\')">'
+      +'<span style="font-size:20px">💬</span>'
+      +'<div><div class="dest-name">'+esc(c.name)+'</div><div class="dest-desc">'+(c.url?'✓ Webhook configurato':'⚠ Da configurare')+'</div></div></div>';
+  }).join('');
+}
+function selTg(id){selTgChat=id;renderTgDests();tgPreview();}
+function selMs(id){selMsCh=id;renderMsDests();msPreview();}
+
+// User selection
+function renderUserSel(){
+  var el=document.getElementById('ut-user-list');if(!el)return;
+  var f=document.getElementById('ut-filter-status');
+  var statusF=f?f.value:'all';
+  var users=MOCK_DATA.users.filter(function(u){return statusF==='all'||u.status===statusF;});
+  el.innerHTML=users.map(function(u){
+    return '<label style="display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s" onmouseover="this.style.background=\'var(--surface)\'" onmouseout="this.style.background=\'\'">'
+      +'<input type="checkbox" '+(selUtUsers[u.id]?'checked':'')+' onchange="toggleUtUser(\''+u.id+'\',this.checked)" style="width:16px;height:16px;cursor:pointer">'
+      +'<div style="flex:1"><div style="font-weight:600;font-size:12.5px">'+esc(u.nome)+'</div><div style="font-size:11px;color:var(--text3)">'+esc(u.username)+' · '+esc(u.email)+'</div></div>'
+      +'<span class="badge '+(u.status==='active'?'badge-green':'badge-red')+'">'+(u.status==='active'?'Attivo':'Sospeso')+'</span>'
+      +'</label>';
+  }).join('');
+  updateUtSummary();
+}
+function toggleUtUser(id,checked){selUtUsers[id]=checked;updateUtSummary();}
+function selAllUsers(v){MOCK_DATA.users.forEach(function(u){selUtUsers[u.id]=v;});renderUserSel();}
+function getSelUsers(){return MOCK_DATA.users.filter(function(u){return selUtUsers[u.id];});}
+function updateUtSummary(){
+  var users=getSelUsers();var el=document.getElementById('ut-summary');if(!el)return;
+  if(!users.length){el.innerHTML='<div class="empty-state" style="padding:20px"><p>Nessun utente selezionato</p></div>';return;}
+  var cfg=loadCfg();var chatIds=cfg.utChatIds||{};
+  var withId=users.filter(function(u){return chatIds[u.id];});
+  var withoutId=users.filter(function(u){return !chatIds[u.id];});
+  el.innerHTML='<div style="padding:4px 0">'
+    +'<div class="stat-row"><span class="stat-row-label">Destinatari selezionati</span><span class="stat-row-value" style="color:var(--blue)">'+users.length+'</span></div>'
+    +'<div class="stat-row"><span class="stat-row-label">Con Chat ID configurato</span><span class="stat-row-value" style="color:var(--green)">'+withId.length+'</span></div>'
+    +'<div class="stat-row"><span class="stat-row-label">Senza Chat ID (skip)</span><span class="stat-row-value" style="color:var(--orange)">'+withoutId.length+'</span></div>'
+    +'</div>'
+    +(withoutId.length?'<div class="alert alert-info" style="font-size:11px;margin-top:10px">Utenti senza Chat ID: '+withoutId.map(function(u){return esc(u.nome);}).join(', ')+'</div>':'');
+}
+
+function useTpl(ch,key){
+  var t=COM_TPLS[key];if(!t)return;
+  var today=new Date().toLocaleDateString('it-IT');
+  var mese=new Date().toLocaleDateString('it-IT',{month:'long',year:'numeric'});
+  var txt=(t[ch]||t.tg).replace(/{data}/g,today).replace(/{mese}/g,mese).replace(/{nome}/g,'[Nome]');
+  var id=ch==='tg'?'tg-text':ch==='ms'?'ms-text':'ut-text';
+  var cnt=ch==='tg'?'tg-cnt':ch==='ms'?'ms-cnt':'ut-cnt';
+  var max=ch==='ms'?28000:4096;
+  var el=document.getElementById(id);if(el){el.value=txt;charCount(id,cnt,max);}
+  if(ch==='tg') tgPreview(); else if(ch==='ms') msPreview();
+}
+
+function fmtTg(txt){return txt.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\*(.*?)\*/g,'<strong>$1</strong>').replace(/_(.*?)_/g,'<em>$1</em>').replace(/`(.*?)`/g,'<code style="background:rgba(0,0,0,.08);padding:1px 4px;border-radius:3px">$1</code>');}
+function fmtMs(txt){return txt.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\*(.*?)\*/g,'<em>$1</em>');}
+
+function tgPreview(){
+  var msg=document.getElementById('tg-text').value||'';
+  var d=getDests();var chat=d.tgChats.find(function(c){return c.id===selTgChat;});
+  var p=document.getElementById('tg-prev-txt');if(p)p.innerHTML=fmtTg(msg)||'<span style="color:var(--text3)">Scrivi un messaggio...</span>';
+  var m=document.getElementById('tg-prev-meta');if(m)m.textContent='→ '+(chat?chat.name:'nessuna destinazione');
+  renderPrevImgs('tg');
+}
+function msPreview(){
+  var msg=document.getElementById('ms-text').value||'';var title=document.getElementById('ms-title').value||'Messaggio Marathon PVR';
+  var pt=document.getElementById('ms-prev-title');if(pt)pt.textContent=title;
+  var p=document.getElementById('ms-prev-txt');if(p)p.innerHTML=fmtMs(msg)||'<span style="color:var(--text3)">Scrivi un messaggio...</span>';
+  var d=getDests();var ch=d.msChannels.find(function(c){return c.id===selMsCh;});
+  var m=document.getElementById('ms-prev-meta');if(m)m.textContent='→ '+(ch?ch.name:'nessun canale');
+  renderPrevImgs('ms');
+}
+
+function charCount(id,cntId,max){
+  var el=document.getElementById(id),cnt=document.getElementById(cntId);if(!el||!cnt)return;
+  var n=el.value.length;cnt.textContent=n+' / '+max;
+  cnt.className='char-cnt'+(n>max*.9&&n<=max?' warn':n>max?' over':'');
+}
+
+// Images
+function addImgs(ch,input){
+  Array.from(input.files||[]).forEach(function(f){
+    if(f.size>10*1024*1024){showMsg('File troppo grande: '+f.name,'error');return;}
+    var r=new FileReader();
+    r.onload=function(e){comImgs[ch].push({name:f.name,type:f.type,data:e.target.result,file:f});renderImgGrid(ch);if(ch==='tg')tgPreview();else if(ch==='ms')msPreview();};
+    r.readAsDataURL(f);
+  });
+  input.value='';
+}
+function removeImg(ch,i){comImgs[ch].splice(i,1);renderImgGrid(ch);if(ch==='tg')tgPreview();else if(ch==='ms')msPreview();}
+function renderImgGrid(ch){
+  var g=document.getElementById(ch+'-img-grid');if(!g)return;
+  g.innerHTML=comImgs[ch].map(function(img,i){
+    return '<div class="img-thumb"><img src="'+img.data+'" alt="'+esc(img.name)+'"><button class="img-thumb-del" onclick="removeImg(\''+ch+'\','+i+')">✕</button></div>';
+  }).join('');
+}
+function renderPrevImgs(ch){
+  var el=document.getElementById(ch+'-prev-imgs');if(!el)return;
+  el.innerHTML=comImgs[ch].map(function(img){return '<img src="'+img.data+'" style="height:60px;border-radius:6px;border:1px solid var(--border);object-fit:cover">';}).join('');
+}
+function setupDrop(ch){
+  var zone=document.getElementById(ch+'-drop');if(!zone)return;
+  zone.addEventListener('dragover',function(e){e.preventDefault();zone.classList.add('drag');});
+  zone.addEventListener('dragleave',function(){zone.classList.remove('drag');});
+  zone.addEventListener('drop',function(e){
+    e.preventDefault();zone.classList.remove('drag');
+    var inp=document.getElementById(ch+'-img-input');
+    var dt=new DataTransfer();
+    Array.from(e.dataTransfer.files).forEach(function(f){if(f.type.startsWith('image/'))dt.items.add(f);});
+    inp.files=dt.files;addImgs(ch,inp);
+  });
+}
+function toggleSched(ch){
+  var chk=document.getElementById(ch+'-sched-chk');var dt=document.getElementById(ch+'-sched-dt');
+  if(!chk||!dt)return;
+  dt.style.display=chk.checked?'':'none';
+  if(chk.checked){var d=new Date();d.setHours(d.getHours()+1);dt.value=d.toISOString().slice(0,16);}
+}
+
+function dataURLtoBlob(dataurl,type){var arr=dataurl.split(','),bstr=atob(arr[1]),n=bstr.length,u8=new Uint8Array(n);for(var i=0;i<n;i++)u8[i]=bstr.charCodeAt(i);return new Blob([u8],{type:type||'image/jpeg'});}
+
+// SEND TELEGRAM
+async function sendTg(){
+  var msg=document.getElementById('tg-text').value.trim();
+  if(!msg&&!comImgs.tg.length){showMsg('Scrivi un messaggio o allega un\'immagine','error');return;}
+  if(!selTgChat){showMsg('Seleziona una destinazione','error');return;}
+  var cfg=loadCfg();var tok=cfg.tgTok;
+  if(!tok){showMsg('Configura il token bot → scheda Config','error');showCh('config');return;}
+  var pin=document.getElementById('tg-pin')&&document.getElementById('tg-pin').checked;
+  try{
+    var lastId=null;
+    if(comImgs.tg.length===1){
+      var fd=new FormData();fd.append('chat_id',selTgChat);fd.append('photo',comImgs.tg[0].file||dataURLtoBlob(comImgs.tg[0].data,comImgs.tg[0].type));
+      if(msg)fd.append('caption',msg);fd.append('parse_mode','Markdown');
+      var r=await fetch('https://api.telegram.org/bot'+tok+'/sendPhoto',{method:'POST',body:fd});
+      var d=await r.json();if(d.ok)lastId=d.result.message_id;else{showMsg('Errore: '+(d.description||''),'error');return;}
+    } else if(comImgs.tg.length>1){
+      var fd=new FormData();fd.append('chat_id',selTgChat);
+      var media=comImgs.tg.map(function(img,i){return {type:'photo',media:'attach://p'+i,caption:i===0&&msg?msg:'',parse_mode:'Markdown'};});
+      fd.append('media',JSON.stringify(media));
+      comImgs.tg.forEach(function(img,i){fd.append('p'+i,img.file||dataURLtoBlob(img.data,img.type),'p'+i);});
+      var r=await fetch('https://api.telegram.org/bot'+tok+'/sendMediaGroup',{method:'POST',body:fd});
+      var d=await r.json();if(!d.ok){showMsg('Errore invio media: '+(d.description||''),'error');return;}
+    } else {
+      var r=await fetch('https://api.telegram.org/bot'+tok+'/sendMessage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:selTgChat,text:msg,parse_mode:'Markdown'})});
+      var d=await r.json();if(d.ok)lastId=d.result.message_id;else{showMsg('Errore: '+(d.description||''),'error');return;}
+    }
+    if(pin&&lastId){await fetch('https://api.telegram.org/bot'+tok+'/pinChatMessage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:selTgChat,message_id:lastId})});}
+    var dd=getDests();var chat=dd.tgChats.find(function(c){return c.id===selTgChat;});
+    logMsg('telegram',{dest:chat?chat.name:selTgChat,msg:msg,imgs:comImgs.tg.length,ts:new Date().toISOString()});
+    showMsg('Messaggio inviato su Telegram ✓');
+    document.getElementById('tg-text').value='';comImgs.tg=[];renderImgGrid('tg');tgPreview();renderLog('telegram');
+  }catch(e){showMsg('Errore di rete: '+e.message,'error');}
+}
+
+// SEND TEAMS — supporta Power Automate (nuovo) e Connector (vecchio)
+async function sendMs(){
+  var msg=document.getElementById('ms-text').value.trim();
+  var title=document.getElementById('ms-title').value.trim()||'Messaggio Marathon PVR';
+  if(!msg&&!comImgs.ms.length){showMsg('Scrivi un messaggio o allega un\'immagine','error');return;}
+  if(!selMsCh){showMsg('Seleziona un canale','error');return;}
+  var d=getDests();var ch=d.msChannels.find(function(c){return c.id===selMsCh;});
+  if(!ch||!ch.url){showMsg('URL Webhook non configurato — vai in Configurazione','error');showCh('config');return;}
+  var isPa=document.getElementById('ms-wh-pa')&&document.getElementById('ms-wh-pa').checked;
+  var body;
+  if(isPa){
+    // Power Automate / Logic Apps — simple JSON any format
+    body={title:title,text:msg,timestamp:new Date().toISOString(),sender:'Marathon PVR Backoffice'};
+  } else {
+    // Legacy Connector (MessageCard)
+    var sections=[{activityTitle:'**'+title+'**',activitySubtitle:'Marathon PVR · '+new Date().toLocaleString('it-IT'),text:msg}];
+    body={'@type':'MessageCard','@context':'http://schema.org/extensions',themeColor:'C8102E',summary:title,sections:sections};
+  }
+  try{
+    var r=await fetch(ch.url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    var txt=await r.text();
+    if(r.ok||r.status===200||txt==='1'||txt.toLowerCase().includes('accepted')){
+      logMsg('teams',{dest:ch.name,title:title,msg:msg,imgs:comImgs.ms.length,ts:new Date().toISOString()});
+      showMsg('Messaggio inviato su Teams ✓');
+      document.getElementById('ms-text').value='';document.getElementById('ms-title').value='';
+      comImgs.ms=[];renderImgGrid('ms');msPreview();renderLog('teams');
+    } else {
+      showMsg('Errore Teams ('+r.status+'): '+txt.slice(0,120),'error');
+    }
+  }catch(e){
+    showMsg('Errore di rete. Verifica URL e che il Webhook sia attivo.','error');
+  }
+}
+
+// SEND TO SUBNETWORK USERS
+async function sendToUsers(){
+  var msg=document.getElementById('ut-text').value.trim();
+  if(!msg&&!comImgs.ut.length){showMsg('Scrivi un messaggio','error');return;}
+  var users=getSelUsers();
+  if(!users.length){showMsg('Seleziona almeno un utente','error');return;}
+  var cfg=loadCfg();var tok=cfg.tgTok;
+  if(!tok){showMsg('Configura il token bot → Config','error');showCh('config');return;}
+  var chatIds=cfg.utChatIds||{};
+  var toSend=users.filter(function(u){return chatIds[u.id];});
+  var skipped=users.filter(function(u){return !chatIds[u.id];});
+  if(!toSend.length){showMsg('Nessun utente selezionato ha un Chat ID configurato','error');return;}
+  var ok=0,fail=0;
+  for(var i=0;i<toSend.length;i++){
+    var u=toSend[i];var chatId=chatIds[u.id];
+    var personalMsg=msg.replace(/{nome}/g,u.nome.split(' ')[0]);
+    try{
+      if(comImgs.ut.length===1){
+        var fd=new FormData();fd.append('chat_id',chatId);fd.append('photo',comImgs.ut[0].file||dataURLtoBlob(comImgs.ut[0].data,comImgs.ut[0].type));
+        fd.append('caption',personalMsg);fd.append('parse_mode','Markdown');
+        var r=await fetch('https://api.telegram.org/bot'+tok+'/sendPhoto',{method:'POST',body:fd});
+        var d=await r.json();if(d.ok)ok++;else fail++;
+      } else {
+        var r=await fetch('https://api.telegram.org/bot'+tok+'/sendMessage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:chatId,text:personalMsg,parse_mode:'Markdown'})});
+        var d=await r.json();if(d.ok)ok++;else fail++;
+      }
+    }catch(e){fail++;}
+    await new Promise(function(res){setTimeout(res,200);}); // rate limit
+  }
+  logMsg('utenti',{dest:ok+' utenti',msg:msg,imgs:comImgs.ut.length,skip:skipped.length,ts:new Date().toISOString()});
+  showMsg('Inviato a '+ok+' utenti'+(fail?' · '+fail+' falliti':'')+(skipped.length?' · '+skipped.length+' senza Chat ID':''));
+  document.getElementById('ut-text').value='';comImgs.ut=[];renderImgGrid('ut');renderLog('utenti');selUtUsers={};renderUserSel();
+}
+
+function logMsg(ch,e){var l=loadLog(ch);l.unshift(e);saveLog(ch,l);}
+function clearCh(ch){if(!confirm('Svuotare lo storico?'))return;saveLog(ch,[]);renderLog(ch);}
+function renderLog(ch){
+  var l=loadLog(ch);var id={telegram:'tg-log-wrap',teams:'ms-log-wrap',utenti:'ut-log-wrap'}[ch];
+  var el=document.getElementById(id);if(!el)return;
+  if(!l.length){el.innerHTML='<div class="empty-state" style="padding:20px"><p>Nessun messaggio inviato</p></div>';return;}
+  var icons={telegram:'📨',teams:'💬',utenti:'👥'};
+  el.innerHTML=l.map(function(e){
+    var dt=new Date(e.ts).toLocaleString('it-IT');
+    return '<div class="log-row"><span class="log-icon">'+(icons[ch]||'📨')+'</span>'
+      +'<div class="log-body"><div style="font-size:12.5px;font-weight:600">'+esc(e.dest)+(e.title?' — '+esc(e.title):'')+(e.imgs?' 🖼×'+e.imgs:'')+(e.skip?' · '+e.skip+' skip':'')+'</div>'
+      +(e.msg?'<div class="log-text">'+esc(e.msg)+'</div>':'')
+      +'<div class="log-meta">'+dt+' · <span class="badge badge-green">Inviato</span></div></div></div>';
+  }).join('');
+}
+
+// Config
+function renderCfg(){
+  var cfg=loadCfg();var t=document.getElementById('cfg-tg-tok');if(t)t.value=cfg.tgTok||'';
+  renderTgChatsCfg();renderMsChsCfg();renderUtChatIdsCfg();
+}
+function renderTgChatsCfg(){
+  var cfg=loadCfg();var chats=cfg.tgChats||[];var el=document.getElementById('tg-chats-cfg');if(!el)return;
+  if(!chats.length){el.innerHTML='<p style="font-size:12px;color:var(--text3)">Nessuna chat</p>';return;}
+  el.innerHTML=chats.map(function(c,i){
+    return '<div style="display:flex;gap:6px;align-items:center;margin-bottom:8px;flex-wrap:wrap">'
+      +'<input value="'+esc(c.name)+'" onchange="updTgChat('+i+',\'name\',this.value)" style="flex:1;min-width:100px">'
+      +'<input value="'+esc(c.id)+'" onchange="updTgChat('+i+',\'id\',this.value)" placeholder="Chat ID" style="width:140px;font-size:12px">'
+      +'<select onchange="updTgChat('+i+',\'type\',this.value)" style="font-size:13px;padding:7px">'
+      +'<option value="group"'+(c.type==='group'?' selected':'')+'>Gruppo</option>'
+      +'<option value="channel"'+(c.type==='channel'?' selected':'')+'>Canale</option></select>'
+      +'<button class="btn btn-secondary btn-sm" style="color:var(--red)" onclick="delTgChat('+i+')">✕</button></div>';
+  }).join('');
+}
+function addTgChat(){var cfg=loadCfg();cfg.tgChats=cfg.tgChats||[];cfg.tgChats.push({id:'',name:'Nuovo',type:'group'});localStorage.setItem('pvr_com3',JSON.stringify(cfg));renderTgChatsCfg();renderTgDests();}
+function updTgChat(i,f,v){var cfg=loadCfg();cfg.tgChats=cfg.tgChats||[];if(cfg.tgChats[i])cfg.tgChats[i][f]=v;localStorage.setItem('pvr_com3',JSON.stringify(cfg));renderTgDests();}
+function delTgChat(i){var cfg=loadCfg();cfg.tgChats=cfg.tgChats||[];cfg.tgChats.splice(i,1);localStorage.setItem('pvr_com3',JSON.stringify(cfg));renderTgChatsCfg();renderTgDests();}
+
+function renderMsChsCfg(){
+  var cfg=loadCfg();var chs=cfg.msChannels||[];var el=document.getElementById('ms-chs-cfg');if(!el)return;
+  if(!chs.length){el.innerHTML='<p style="font-size:12px;color:var(--text3)">Nessun canale</p>';return;}
+  el.innerHTML=chs.map(function(c,i){
+    return '<div style="margin-bottom:10px;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm)">'
+      +'<div style="display:flex;gap:6px;margin-bottom:7px"><input value="'+esc(c.name)+'" onchange="updMsCh('+i+',\'name\',this.value)" placeholder="Nome" style="flex:1">'
+      +'<button class="btn btn-secondary btn-sm" style="color:var(--red)" onclick="delMsCh('+i+')">✕</button></div>'
+      +'<input value="'+esc(c.url)+'" onchange="updMsCh('+i+',\'url\',this.value)" placeholder="https://prod-XX.westus.logic.azure.com/... (Power Automate)" style="width:100%;font-size:11px">'
+      +'<div style="display:flex;gap:8px;margin-top:8px"><button class="btn btn-secondary btn-sm" onclick="testMsWh('+i+')">🔗 Testa</button><span id="ms-wh-test-'+i+'" style="font-size:11px"></span></div></div>';
+  }).join('');
+}
+function addMsCh(){var cfg=loadCfg();cfg.msChannels=cfg.msChannels||[];cfg.msChannels.push({id:'ch'+Date.now(),name:'Nuovo canale',url:'',type:'pa'});localStorage.setItem('pvr_com3',JSON.stringify(cfg));renderMsChsCfg();renderMsDests();}
+function updMsCh(i,f,v){var cfg=loadCfg();cfg.msChannels=cfg.msChannels||[];if(cfg.msChannels[i])cfg.msChannels[i][f]=v;localStorage.setItem('pvr_com3',JSON.stringify(cfg));renderMsDests();}
+function delMsCh(i){var cfg=loadCfg();cfg.msChannels=cfg.msChannels||[];cfg.msChannels.splice(i,1);localStorage.setItem('pvr_com3',JSON.stringify(cfg));renderMsChsCfg();renderMsDests();}
+
+function renderUtChatIdsCfg(){
+  var cfg=loadCfg();var chatIds=cfg.utChatIds||{};var el=document.getElementById('ut-chatids-cfg');if(!el)return;
+  el.innerHTML=MOCK_DATA.users.map(function(u){
+    return '<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">'
+      +'<div style="flex:1;font-size:12.5px;font-weight:600">'+esc(u.nome)+'<span style="font-size:10.5px;color:var(--text3);margin-left:6px">'+esc(u.username)+'</span></div>'
+      +'<input id="ut-cid-'+u.id+'" value="'+esc(chatIds[u.id]||'')+'" placeholder="Chat ID Telegram" style="width:140px;font-size:12px"></div>';
+  }).join('');
+}
+function saveUtChatIds(){
+  var cfg=loadCfg();cfg.utChatIds={};
+  MOCK_DATA.users.forEach(function(u){var el=document.getElementById('ut-cid-'+u.id);if(el&&el.value.trim())cfg.utChatIds[u.id]=el.value.trim();});
+  localStorage.setItem('pvr_com3',JSON.stringify(cfg));showMsg('Chat ID salvati ✓');updateUtSummary();
+}
+
+async function testTgBot(){
+  var tok=document.getElementById('cfg-tg-tok').value.trim();var el=document.getElementById('tg-test-res');
+  if(!tok){el.textContent='⚠ Inserisci il token';el.style.color='var(--orange)';return;}
+  el.textContent='⏳...';el.style.color='var(--text2)';
+  try{var r=await fetch('https://api.telegram.org/bot'+tok+'/getMe');var d=await r.json();
+    if(d.ok){el.textContent='✓ @'+d.result.username;el.style.color='var(--green)';}
+    else{el.textContent='✗ Token non valido';el.style.color='var(--red)';}
+  }catch(e){el.textContent='✗ Errore rete';el.style.color='var(--red)';}
+}
+async function testMsWh(i){
+  var cfg=loadCfg();var ch=(cfg.msChannels||[])[i];var el=document.getElementById('ms-wh-test-'+i);
+  if(!ch||!ch.url){el.textContent='⚠ URL mancante';el.style.color='var(--orange)';return;}
+  el.textContent='⏳...';
+  var isPa=document.getElementById('ms-wh-pa')&&document.getElementById('ms-wh-pa').checked;
+  var body=isPa?{title:'✅ Test',text:'Test connessione Marathon PVR Backoffice',timestamp:new Date().toISOString()}:{'@type':'MessageCard','@context':'http://schema.org/extensions',text:'✅ Test Marathon PVR Backoffice'};
+  try{var r=await fetch(ch.url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    var txt=await r.text();
+    if(r.ok||txt==='1'||txt.toLowerCase().includes('accepted')){el.textContent='✓ Webhook attivo';el.style.color='var(--green)';}
+    else{el.textContent='✗ Errore '+r.status;el.style.color='var(--red)';}
+  }catch(e){el.textContent='✗ Errore rete';el.style.color='var(--red)';}
+}
+</script>
+
 </body>
 </html>
